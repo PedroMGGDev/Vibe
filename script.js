@@ -35,7 +35,7 @@ signupForm.addEventListener('submit', function(event) {
         profession: profession
     }).then(() => {
         // Redireciona para a página de perfis após salvar os dados
-        window.location.href = 'profiles.html'; // Alterar 'profiles.html' para o nome da sua página
+        window.location.assign('profiles.html'); // Usar location.assign para garantir que o redirecionamento aconteça sem recarregar
     }).catch((error) => {
         console.error('Erro ao salvar os dados: ', error);
     });
