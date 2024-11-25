@@ -69,8 +69,8 @@
                 // Exibe um alerta para verificar se a operação foi bem-sucedida
                 alert("Dados salvos com sucesso!");
 
-                // Redireciona para a página de perfis
-                window.location.href = 'profiles.html'; // Redireciona para a página de perfis
+                // Redireciona para a página de perfis de forma segura
+                window.location.replace('profiles.html'); // Usando window.location.replace para evitar recarregar a página
             }).catch((error) => {
                 // Exibe um alerta se ocorrer algum erro
                 alert(`Erro ao salvar os dados: ${error.message}`);
