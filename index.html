@@ -61,15 +61,21 @@
 
             // Envia os dados para o Firebase
             const newUserRef = database.ref('users').push();
+            alert("Dados prontos para envio ao Firebase...");
+
             newUserRef.set({
                 name: name,
                 age: age,
                 profession: profession
             }).then(() => {
+                alert("Dados enviados com sucesso para o Firebase!");
+
                 // Após enviar os dados, redireciona para a página de perfis
+                alert("Redirecionando para a página de perfis...");
                 window.location.href = 'profiles.html';
             }).catch((error) => {
                 console.error("Erro ao salvar no banco de dados:", error);
+                alert("Ocorreu um erro ao salvar os dados no Firebase.");
             });
         });
     </script>
