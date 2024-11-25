@@ -39,42 +39,7 @@
             measurementId: "G-JVPNDD1HM5"
         };
 
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        // Seleciona o formulário de cadastro
-        const signupForm = document.getElementById('signup-form');
-
-        // Função para salvar os dados no Firebase e redirecionar
-        signupForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Previne o envio do formulário e o recarregamento da página
-
-            // Pega os valores do formulário
-            const name = document.getElementById('name').value;
-            const age = document.getElementById('age').value;
-            const profession = document.getElementById('profession').value;
-
-            // Exibe um alerta para garantir que os valores estão sendo capturados
-            alert(`Nome: ${name}, Idade: ${age}, Profissão: ${profession}`);
-
-            // Cria um novo perfil no banco de dados
-            const profilesRef = database.ref('profiles');
-            const newProfileRef = profilesRef.push(); // Cria um novo perfil com um ID único
-            newProfileRef.set({
-                name: name,
-                age: age,
-                profession: profession
-            }).then(() => {
-                // Exibe um alerta para verificar se a operação foi bem-sucedida
-                alert("Dados salvos com sucesso!");
-
-                // Redireciona para a página de perfis
-                window.location.href = 'profiles.html'; // Redireciona para a página de perfis
-            }).catch((error) => {
-                // Exibe um alerta se ocorrer algum erro
-                alert(`Erro ao salvar os dados: ${error.message}`);
-            });
-        });
+        
         // Função para capturar dados e redirecionar
         signupForm2.addEventListener('submit', function(event) {
             event.preventDefault(); // Previne o envio do formulário e o recarregamento da página
