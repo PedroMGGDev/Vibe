@@ -42,7 +42,14 @@
         
         // Função para capturar dados e redirecionar
         signupForm.addEventListener('submit', function(event) {
-            
+            event.preventDefault(); // Previne o envio do formulário e o recarregamento da página
+
+            // Pega os valores do formulário
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const profession = document.getElementById('profession').value;
+
+            // Exibe um alerta para garantir que os valores estão sendo capturados
             alert(`Nome: ${name}, Idade: ${age}, Profissão: ${profession}`);
 
             // Redireciona para a página de perfis
