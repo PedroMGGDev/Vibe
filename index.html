@@ -3,61 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tinder Clone</title>
+    <title>Vibe</title>
     <link rel="stylesheet" href="styles.css"> <!-- Link para o arquivo CSS -->
 </head>
 <body>
 
     <div class="app">
         <header>
-            <h1>Tinder Clone</h1>
+            <h1>Vibe</h1>
         </header>
         
         <div class="profile-container">
-            <!-- Perfil 1 -->
-            <div class="profile">
+            <!-- Perfis Dinâmicos -->
+            <div id="profile-1" class="profile">
                 <img src="https://via.placeholder.com/375x450" alt="Perfil 1">
                 <div class="profile-info">
                     <h3>João, 25</h3>
                     <p>Designer Gráfico</p>
                 </div>
-                <div class="actions">
-                    <button>👎</button>
-                    <button>👍</button>
-                </div>
             </div>
 
-            <!-- Perfil 2 -->
-            <div class="profile">
+            <div id="profile-2" class="profile hidden">
                 <img src="https://via.placeholder.com/375x450" alt="Perfil 2">
                 <div class="profile-info">
                     <h3>Maria, 28</h3>
                     <p>Arquiteta</p>
                 </div>
-                <div class="actions">
-                    <button>👎</button>
-                    <button>👍</button>
-                </div>
             </div>
 
-            <!-- Perfil 3 -->
-            <div class="profile">
+            <div id="profile-3" class="profile hidden">
                 <img src="https://via.placeholder.com/375x450" alt="Perfil 3">
                 <div class="profile-info">
                     <h3>Ana, 22</h3>
                     <p>Estudante de Psicologia</p>
                 </div>
-                <div class="actions">
-                    <button>👎</button>
-                    <button>👍</button>
-                </div>
             </div>
         </div>
 
+        <div class="actions">
+            <button id="dislike-button">👎</button>
+            <button id="like-button">👍</button>
+        </div>
+
         <footer>
-            <button>Reiniciar</button>
+            <button id="reset-button">Reiniciar</button>
         </footer>
     </div>
 
+    <script src="script.js"></script> <!-- Link para o arquivo JavaScript -->
 </body>
 </html>
