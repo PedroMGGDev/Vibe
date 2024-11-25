@@ -26,6 +26,9 @@ signupForm.addEventListener('submit', function(event) {
     const age = document.getElementById('age').value;
     const profession = document.getElementById('profession').value;
 
+    // Exibe um alerta para garantir que os valores estão sendo capturados
+    alert(`Nome: ${name}, Idade: ${age}, Profissão: ${profession}`);
+
     // Cria um novo perfil no banco de dados
     const profilesRef = database.ref('profiles');
     const newProfileRef = profilesRef.push(); // Cria um novo perfil com um ID único
@@ -34,9 +37,16 @@ signupForm.addEventListener('submit', function(event) {
         age: age,
         profession: profession
     }).then(() => {
-        // Redireciona para a página de perfis após salvar os dados
-        window.location.assign('profiles.html'); // Usar location.assign para garantir que o redirecionamento aconteça sem recarregar
+        // Exibe um alerta para verificar se a operação foi bem-sucedida
+        alert("Dados salvos com sucesso!");
+
+        // Garantir que o redirecionamento aconteça após a conclusão do salvamento
+        setTimeout(() => {
+            alert("Redirecionando para profiles.html...");
+            window.location.assign('profiles.html'); // Redireciona para a página de perfis após salvar os dados
+        }, 500); // Aguarda 500ms antes de redirecionar
     }).catch((error) => {
-        console.error('Erro ao salvar os dados: ', error);
+        // Exibe um alerta se ocorrer algum erro
+        alert(`Erro ao salvar os dados: ${error.message}`);
     });
 });
