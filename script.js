@@ -1,71 +1,58 @@
-// Importar as funções necessárias do Firebase
-import { getDatabase, ref, onValue } from "firebase/database";
+// Importar as funções do Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
-// Inicializar o Firebase Database
-const database = getDatabase();
-const profilesRef = ref(database, 'profiles');
+// Configuração do Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyAFqEgc2jaOafTVsCwL5Zt65DHFHttcjok",
+  authDomain: "vibe-8002b.firebaseapp.com",
+  databaseURL: "https://vibe-8002b-default-rtdb.firebaseio.com",
+  projectId: "vibe-8002b",
+  storageBucket: "vibe-8002b.appspot.com",
+  messagingSenderId: "1031587492132",
+  appId: "1:1031587492132:web:9e9a1ce28ec6a596d843b1",
+  measurementId: "G-JVPNDD1HM5",
+};
 
-// Seleciona os elementos
-const profileContainer = document.querySelector('.profile-container');
-const likeButton = document.getElementById('like-button');
-const dislikeButton = document.getElementById('dislike-button');
-const resetButton = document.getElementById('reset-button');
+// Inicializar Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
-let currentProfileIndex = 0;
-let profiles = [];
+// Seleciona o formulário e os campos de entrada
+const signupForm = document.getElementById('signup-form');
+const nameInput = document.getElementById('name');
+const ageInput = document.getElementById('age');
+const professionInput = document.getElementById('profession');
 
-// Função para carregar os perfis do Firebase
-function loadProfilesFromFirebase() {
-    onValue(profilesRef, (snapshot) => {
-        if (snapshot.exists()) {
-            profiles = Object.values(snapshot.val()); // Converte o snapshot em um array
-            renderProfiles();
-        } else {
-            console.log("Nenhum perfil encontrado.");
-        }
-    });
-}
+// Adiciona evento ao formulário
+signupForm.addEventListener('submit', (event) => {
+    event.preventDefault(); // Evita que a página recarregue
 
-// Função para renderizar os perfis no DOM
-function renderProfiles() {
-    profileContainer.innerHTML = ''; // Limpa os perfis existentes
-    profiles.forEach((profile, index) => {
-        const profileDiv = document.createElement('div');
-        profileDiv.classList.add('profile');
-        if (index !== 0) profileDiv.classList.add('hidden'); // Esconde todos exceto o primeiro
-        profileDiv.innerHTML = `
-            <img src="${profile.photo || 'default.png'}" alt="${profile.name}">
-            <div class="profile-info">
-                <h3>${profile.name}, ${profile.age}</h3>
-                <p>${profile.profession}</p>
-            </div>
-        `;
-        profileContainer.appendChild(profileDiv);
-    });
-    currentProfileIndex = 0; // Reinicia o índice
-}
+    // Coleta os valores do formulário
+    const name = nameInput.value.trim();
+    const age = parseInt(ageInput.value);
+    const profession = professionInput.value.trim();
 
-// Função para mostrar o próximo perfil
-function showNextProfile() {
-    const profileElements = document.querySelectorAll('.profile');
-    if (currentProfileIndex < profileElements.length - 1) {
-        profileElements[currentProfileIndex].classList.add('hidden');
-        currentProfileIndex++;
-        profileElements[currentProfileIndex].classList.remove('hidden');
+    // Verifica se os campos estão preenchidos
+    if (name && age && profession) {
+        // Salva os dados no Firebase
+        const profilesRef = ref(database, 'profiles');
+        const newProfileRef = push(profilesRef);
+        set(newProfileRef, {
+            name: name,
+            age: age,
+            profession: profession,
+            photo: "default.png", // Foto padrão
+        })
+        .then(() => {
+            console.log("Perfil criado com sucesso!");
+            // Redireciona para profiles.html
+            window.location.href = "profiles.html";
+        })
+        .catch((error) => {
+            console.error("Erro ao criar perfil:", error);
+        });
+    } else {
+        alert("Por favor, preencha todos os campos.");
     }
-}
-
-// Adicionando os eventos para os botões
-likeButton.addEventListener('click', showNextProfile);
-dislikeButton.addEventListener('click', showNextProfile);
-
-// Função para reiniciar os perfis
-resetButton.addEventListener('click', () => {
-    const profileElements = document.querySelectorAll('.profile');
-    profileElements.forEach(profile => profile.classList.add('hidden'));
-    currentProfileIndex = 0;
-    profileElements[currentProfileIndex].classList.remove('hidden');
 });
-
-// Carregar perfis ao iniciar o aplicativo
-loadProfilesFromFirebase();
