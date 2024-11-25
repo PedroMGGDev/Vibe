@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
 </head>
 <body>
     <div class="app">
@@ -25,14 +27,27 @@
     </div>
 
     <script>
-        // Função para capturar dados e redirecionar
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAFqEgc2jaOafTVsCwL5Zt65DHFHttcjok",
+            authDomain: "vibe-8002b.firebaseapp.com",
+            databaseURL: "https://vibe-8002b-default-rtdb.firebaseio.com",
+            projectId: "vibe-8002b",
+            storageBucket: "vibe-8002b.firebasestorage.app",
+            messagingSenderId: "1031587492132",
+            appId: "1:1031587492132:web:9e9a1ce28ec6a596d843b1",
+            measurementId: "G-JVPNDD1HM5"
+        };
+
+        // Inicializa o Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Seleciona o formulário de cadastro
         const signupForm = document.getElementById('signup-form');
 
         signupForm.addEventListener('submit', function(event) {
             event.preventDefault(); // Previne o envio do formulário e o recarregamento da página
-
-            // Exibe alerta para garantir que o evento foi capturado
-            alert('Formulário enviado!');
 
             // Pega os valores do formulário
             const name = document.getElementById('name').value;
@@ -42,11 +57,19 @@
             // Exibe um alerta com os dados capturados
             alert(`Nome: ${name}, Idade: ${age}, Profissão: ${profession}`);
 
-            // Verifica se os dados foram capturados corretamente
-            alert('Agora vamos redirecionar para a página de perfis...');
-
-            // Redireciona para a página de perfis
-            window.location.href = 'profiles.html'; // Redireciona para a página de perfis
+            // Envia os dados para o Firebase
+            const userRef = database.ref('users'); // Defina um caminho no seu banco de dados
+            userRef.push({
+                name: name,
+                age: age,
+                profession: profession
+            }).then(() => {
+                alert("Dados enviados com sucesso para o Firebase!");
+                // Redireciona para a página de perfis após o envio dos dados
+                window.location.href = 'profiles.html';
+            }).catch((error) => {
+                alert("Erro ao enviar os dados para o Firebase: " + error.message);
+            });
         });
     </script>
 </body>
