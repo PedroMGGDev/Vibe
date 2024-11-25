@@ -4,62 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <form id="signup-form">
-        <input type="text" id="name" placeholder="Nome" required>
-        <input type="number" id="age" placeholder="Idade" required>
-        <input type="text" id="profession" placeholder="Profissão" required>
-        <input type="file" id="photo" accept="image/*" required>
-        <button type="submit">Criar Conta</button>
-    </form>
+    <div class="app">
+        <header>
+            <h1>Vibe</h1>
+            <p>Conecte-se com pessoas que compartilham suas vibrações!</p>
+        </header>
+        
+        <div class="login-container">
+            <!-- Formulário de criação de conta -->
+            <form id="signup-form" onsubmit="return handleSubmit(event)">
+                <input type="text" id="name" placeholder="Nome" required>
+                <input type="number" id="age" placeholder="Idade" required>
+                <input type="text" id="profession" placeholder="Profissão" required>
+                <button type="submit">Criar Conta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Carregar o Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
 
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-            apiKey: "SUA_API_KEY",
-            authDomain: "SEU_AUTH_DOMAIN",
-            projectId: "SEU_PROJECT_ID",
-            storageBucket: "SEU_STORAGE_BUCKET",
-            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-            appId: "SEU_APP_ID"
+            apiKey: "AIzaSyAFqEgc2jaOafTVsCwL5Zt65DHFHttcjok",
+            authDomain: "vibe-8002b.firebaseapp.com",
+            databaseURL: "https://vibe-8002b-default-rtdb.firebaseio.com",
+            projectId: "vibe-8002b",
+            storageBucket: "vibe-8002b.firebasestorage.app",
+            messagingSenderId: "1031587492132",
+            appId: "1:1031587492132:web:9e9a1ce28ec6a596d843b1",
+            measurementId: "G-JVPNDD1HM5"
         };
 
-        // Inicializando o Firebase
-        firebase.initializeApp(firebaseConfig);
-        const storage = firebase.storage();
+        // Inicializa o Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-        const signupForm = document.getElementById('signup-form');
+        // Função que lida com o envio do formulário
+        function handleSubmit(event) {
+            event.preventDefault(); // Impede o recarregamento da página
 
-        signupForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-
+            // Captura os valores do formulário
             const name = document.getElementById('name').value;
             const age = document.getElementById('age').value;
             const profession = document.getElementById('profession').value;
-            const file = document.getElementById('photo').files[0];
 
-            if (file) {
-                const storageRef = storage.ref('images/' + file.name);
-                const uploadTask = storageRef.put(file);
+            // Exibe um alerta com os dados do formulário
+            alert(`Dados Capturados: Nome - ${name}, Idade - ${age}, Profissão - ${profession}`);
 
-                uploadTask.on('state_changed', function(snapshot) {
-                    // Progresso do upload
-                }, function(error) {
-                    console.error(error);
-                }, function() {
-                    // Upload concluído, obtenha a URL da imagem
-                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                        // Agora você pode salvar o URL da imagem no Firebase Database ou Firestore
-                        alert('Imagem carregada com sucesso!');
-                        alert('URL da imagem: ' + downloadURL);
+            // Salva os dados no Firebase Realtime Database
+            const newUserRef = firebase.database().ref('users').push(); // Adiciona um novo usuário com chave única
+            newUserRef.set({
+                name: name,
+                age: age,
+                profession: profession
+            }).then(() => {
+                // Alerta para confirmar o sucesso
+                alert('Dados salvos no banco de dados com sucesso!');
 
-                        // Redireciona ou faz outra ação com o URL da imagem
-                        window.location.href = 'profiles.html';
-                    });
-                });
-            }
-        });
+                // Após salvar, redireciona para a página de perfis após uma pequena pausa
+                setTimeout(function() {
+                    window.location.href = 'profiles.html'; // Redireciona para a página de perfis
+                }, 1000); // Pausa de 1 segundo antes de redirecionar
+            }).catch((error) => {
+                // Caso ocorra algum erro ao salvar no Firebase
+                alert(`Erro ao salvar os dados: ${error.message}`);
+            });
+
+            return false; // Impede o recarregamento da página
+        }
     </script>
 </body>
 </html>
