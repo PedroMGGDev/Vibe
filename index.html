@@ -24,6 +24,7 @@
         </div>
     </div>
 
+    <!-- Carregar o Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
 
@@ -44,33 +45,36 @@
         const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // Função para capturar dados e redirecionar
+        // Captura o formulário
         const signupForm = document.getElementById('signup-form');
 
+        // Função que lida com o envio do formulário
         signupForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Previne o envio do formulário e o recarregamento da página
+            event.preventDefault(); // Impede o recarregamento da página
 
-            // Pega os valores do formulário
+            // Captura os valores do formulário
             const name = document.getElementById('name').value;
             const age = document.getElementById('age').value;
             const profession = document.getElementById('profession').value;
 
-            // Exibe um alerta com os dados capturados
-            alert(`Nome: ${name}, Idade: ${age}, Profissão: ${profession}`);
+            // Exibe um alerta com os dados do formulário
+            alert(`Dados Capturados: Nome - ${name}, Idade - ${age}, Profissão - ${profession}`);
 
-            // Salva os dados no Firebase
-            const newUserRef = database.ref('users').push(); // Adiciona um novo usuário
+            // Salva os dados no Firebase Realtime Database
+            const newUserRef = database.ref('users').push(); // Adiciona um novo usuário com chave única
             newUserRef.set({
                 name: name,
                 age: age,
                 profession: profession
             }).then(() => {
-                alert('Dados salvos com sucesso no banco de dados!');
-                
-                // Redireciona para a página de perfis
-                window.location.href = 'profiles.html'; // Redireciona para a página de perfis
+                // Alerta para confirmar o sucesso
+                alert('Dados salvos no banco de dados com sucesso!');
+
+                // Após salvar, redireciona para a página de perfis
+                window.location.href = 'profiles.html';
             }).catch((error) => {
-                alert('Erro ao salvar dados no banco de dados: ' + error.message);
+                // Caso ocorra algum erro ao salvar no Firebase
+                alert(`Erro ao salvar os dados: ${error.message}`);
             });
         });
     </script>
