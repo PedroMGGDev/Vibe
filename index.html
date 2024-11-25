@@ -70,8 +70,10 @@
                 // Alerta para confirmar o sucesso
                 alert('Dados salvos no banco de dados com sucesso!');
 
-                // Após salvar, redireciona para a página de perfis
-                window.location.href = 'profiles.html';
+                // Redireciona após 1 segundo para garantir que o alerta seja visto
+                setTimeout(function() {
+                    window.location.href = 'profiles.html'; // Redireciona para a página de perfis
+                }, 1000); // Atraso de 1 segundo
             }).catch((error) => {
                 // Caso ocorra algum erro ao salvar no Firebase
                 alert(`Erro ao salvar os dados: ${error.message}`);
