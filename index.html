@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibe</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Incluindo o Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
 </head>
 <body>
     <div class="app">
@@ -25,9 +28,7 @@
     </div>
 
     <script>
-        // Seleciona o formulário de cadastro
-        const signupForm2 = document.getElementById('signup-form');
- // Configuração do Firebase
+        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAFqEgc2jaOafTVsCwL5Zt65DHFHttcjok",
             authDomain: "vibe-8002b.firebaseapp.com",
@@ -39,6 +40,12 @@
             measurementId: "G-JVPNDD1HM5"
         };
 
+        // Inicializa o Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
+
+        // Seleciona o formulário de cadastro
+        const signupForm2 = document.getElementById('signup-form');
         
         // Função para capturar dados e redirecionar
         signupForm2.addEventListener('submit', function(event) {
@@ -52,8 +59,18 @@
             // Exibe um alerta para garantir que os valores estão sendo capturados
             alert(`Nome: ${name}, Idade: ${age}, Profissão: ${profession}`);
 
-            // Redireciona para a página de perfis
-            window.location.href = 'profiles.html'; // Redireciona para a página de perfis
+            // Envia os dados para o Firebase
+            const newUserRef = database.ref('users').push();
+            newUserRef.set({
+                name: name,
+                age: age,
+                profession: profession
+            }).then(() => {
+                // Após enviar os dados, redireciona para a página de perfis
+                window.location.href = 'profiles.html';
+            }).catch((error) => {
+                console.error("Erro ao salvar no banco de dados:", error);
+            });
         });
     </script>
 </body>
