@@ -1,24 +1,29 @@
-// Seleciona o contêiner de perfis
-const profileContainer = document.querySelector('.profile-container');
+// Captura o formulário de cadastro
+const signupForm = document.getElementById('signup-form');
 
-// Carrega os perfis do localStorage
-const storedProfiles = JSON.parse(localStorage.getItem('profiles')) || [];
+// Verifica se o formulário existe (para evitar erros)
+if (signupForm) {
+    signupForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Evita o reload da página
 
-// Função para criar um perfil no DOM
-function createProfile(profile) {
-    const profileDiv = document.createElement('div');
-    profileDiv.classList.add('profile');
+        // Coleta os dados do formulário
+        const name = document.getElementById('name').value;
+        const age = document.getElementById('age').value;
+        const profession = document.getElementById('profession').value;
 
-    profileDiv.innerHTML = `
-        <img src="default-avatar.png" alt="${profile.name}">
-        <div class="profile-info">
-            <h3>${profile.name}, ${profile.age}</h3>
-            <p>${profile.profession}</p>
-        </div>
-    `;
+        // Cria um objeto com as informações do perfil
+        const newProfile = {
+            name: name,
+            age: age,
+            profession: profession,
+        };
 
-    profileContainer.appendChild(profileDiv);
+        // Salva o perfil no localStorage
+        let profiles = JSON.parse(localStorage.getItem('profiles')) || [];
+        profiles.push(newProfile);
+        localStorage.setItem('profiles', JSON.stringify(profiles));
+
+        // Redireciona para profiles.html
+        window.location.href = 'profiles.html';
+    });
 }
-
-// Adiciona os perfis ao contêiner
-storedProfiles.forEach(profile => createProfile(profile));
