@@ -1,29 +1,45 @@
-// Captura o formulário de cadastro
-const signupForm = document.getElementById('signup-form');
+// Importar as funções necessárias do Firebase
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, push, set } from "firebase/database";
 
-// Verifica se o formulário existe (para evitar erros)
-if (signupForm) {
-    signupForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Evita o reload da página
+// Configuração do Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyAFqEgc2jaOafTVsCwL5Zt65DHFHttcjok",
+  authDomain: "vibe-8002b.firebaseapp.com",
+  databaseURL: "https://vibe-8002b-default-rtdb.firebaseio.com",
+  projectId: "vibe-8002b",
+  storageBucket: "vibe-8002b.firebasestorage.app",
+  messagingSenderId: "1031587492132",
+  appId: "1:1031587492132:web:9e9a1ce28ec6a596d843b1",
+  measurementId: "G-JVPNDD1HM5",
+};
 
-        // Coleta os dados do formulário
-        const name = document.getElementById('name').value;
-        const age = document.getElementById('age').value;
-        const profession = document.getElementById('profession').value;
+// Inicializar Firebase e o Realtime Database
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
-        // Cria um objeto com as informações do perfil
-        const newProfile = {
-            name: name,
-            age: age,
-            profession: profession,
-        };
+// Referência ao Database para perfis
+const profilesRef = ref(database, 'profiles');
 
-        // Salva o perfil no localStorage
-        let profiles = JSON.parse(localStorage.getItem('profiles')) || [];
-        profiles.push(newProfile);
-        localStorage.setItem('profiles', JSON.stringify(profiles));
-
-        // Redireciona para profiles.html
-        window.location.href = 'profiles.html';
+// Função para salvar um novo perfil
+function saveProfile(name, age, profession, photo) {
+    const newProfileRef = push(profilesRef); // Cria um ID único para o perfil
+    set(newProfileRef, {
+        name: name,
+        age: age,
+        profession: profession,
+        photo: photo || "default.png", // Foto padrão caso não seja fornecida
+    })
+    .then(() => {
+        console.log("Perfil salvo com sucesso!");
+    })
+    .catch((error) => {
+        console.error("Erro ao salvar perfil:", error);
     });
 }
+
+// Exemplo de uso: Salvar perfis
+saveProfile("Samuel", 24, "Engenheiro de Software", "Samuel.png");
+saveProfile("Miguel", 27, "Advogado", "Miguel.png");
+saveProfile("Pedrinho", 21, "Estudante de Engenharia", "Pedrinho.png");
+saveProfile("Miguelzinho", 29, "Empresário", "Miguelzinho.png");
