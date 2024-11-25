@@ -3,33 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="app">
-        <header>
-            <h1>Vibe</h1>
-            <p>Conecte-se com pessoas que compartilham suas vibrações!</p>
-        </header>
-        
-        <div class="login-container">
-            <!-- Formulário de criação de conta -->
-            <form id="signup-form" onsubmit="return handleSubmit(event)">
-                <input type="text" id="name" placeholder="Nome" required>
-                <input type="number" id="age" placeholder="Idade" required>
-                <input type="text" id="profession" placeholder="Profissão" required>
-                <button type="submit">Criar Conta</button>
-            </form>
-        </div>
-    </div>
+    <title>Cadastro</title>
 
-    <!-- Carregar o Firebase SDK -->
+    <!-- Adicionar o link para o Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js"></script>
+</head>
+<body>
+    <h2>Formulário de Cadastro</h2>
+    <form id="signup-form">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" required><br><br>
 
+        <label for="age">Idade:</label>
+        <input type="number" id="age" required><br><br>
+
+        <label for="profession">Profissão:</label>
+        <input type="text" id="profession" required><br><br>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <!-- Script JS para manipulação -->
     <script>
-        // Configuração do Firebase
+        // Importa as funções necessárias do SDKs do Firebase
+        import { initializeApp } from "firebase/app";
+        import { getDatabase, ref, set } from "firebase/database"; // Importação para manipulação do Realtime Database
+        import { getAnalytics } from "firebase/analytics"; // Para obter o Analytics
+
+        // Sua configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAFqEgc2jaOafTVsCwL5Zt65DHFHttcjok",
             authDomain: "vibe-8002b.firebaseapp.com",
@@ -42,11 +45,16 @@
         };
 
         // Inicializa o Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        const app = initializeApp(firebaseConfig);
+
+        // Obter uma referência do Realtime Database
+        const database = getDatabase(app);
+
+        // Obtém o formulário de cadastro
+        const signupForm = document.getElementById('signup-form');
 
         // Função que lida com o envio do formulário
-        function handleSubmit(event) {
+        signupForm.addEventListener('submit', function(event) {
             event.preventDefault(); // Impede o recarregamento da página
 
             // Captura os valores do formulário
@@ -57,36 +65,30 @@
             // Exibe um alerta com os dados do formulário
             alert(`Dados Capturados: Nome - ${name}, Idade - ${age}, Profissão - ${profession}`);
 
-            // Verifica se os dados estão sendo capturados corretamente
-            if (name && age && profession) {
-                alert("Dados válidos, tentando salvar no Firebase...");
-            } else {
-                alert("Dados inválidos!");
-                return false; // Impede continuar se os dados forem inválidos
+            // Tenta salvar os dados no Firebase
+            try {
+                const newUserRef = ref(database, 'users/' + Date.now()); // Cria uma chave única para cada usuário
+                set(newUserRef, {
+                    name: name,
+                    age: age,
+                    profession: profession
+                }).then(() => {
+                    // Alerta para confirmar que os dados foram salvos
+                    alert('Dados salvos no banco de dados com sucesso!');
+
+                    // Após salvar, redireciona para a página de perfis após uma pequena pausa
+                    setTimeout(function() {
+                        window.location.href = 'profiles.html'; // Redireciona para a página de perfis
+                    }, 1000); // Pausa de 1 segundo antes de redirecionar
+                }).catch((error) => {
+                    // Caso ocorra um erro ao salvar os dados no Firebase
+                    alert(`Erro ao salvar os dados: ${error.message}`);
+                });
+            } catch (error) {
+                // Se ocorrer algum erro no processo
+                alert(`Erro inesperado: ${error.message}`);
             }
-
-            // Salva os dados no Firebase Realtime Database
-            const newUserRef = firebase.database().ref('users').push(); // Adiciona um novo usuário com chave única
-
-            newUserRef.set({
-                name: name,
-                age: age,
-                profession: profession
-            }).then(() => {
-                // Alerta para confirmar o sucesso
-                alert('Dados salvos no banco de dados com sucesso!');
-
-                // Após salvar, redireciona para a página de perfis após uma pequena pausa
-                setTimeout(function() {
-                    window.location.href = 'profiles.html'; // Redireciona para a página de perfis
-                }, 1000); // Pausa de 1 segundo antes de redirecionar
-            }).catch((error) => {
-                // Caso ocorra algum erro ao salvar no Firebase
-                alert(`Erro ao salvar os dados: ${error.message}`);
-            });
-
-            return false; // Impede o recarregamento da página
-        }
+        });
     </script>
 </body>
 </html>
