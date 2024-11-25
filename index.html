@@ -57,8 +57,17 @@
             // Exibe um alerta com os dados do formulário
             alert(`Dados Capturados: Nome - ${name}, Idade - ${age}, Profissão - ${profession}`);
 
+            // Verifica se os dados estão sendo capturados corretamente
+            if (name && age && profession) {
+                alert("Dados válidos, tentando salvar no Firebase...");
+            } else {
+                alert("Dados inválidos!");
+                return false; // Impede continuar se os dados forem inválidos
+            }
+
             // Salva os dados no Firebase Realtime Database
             const newUserRef = firebase.database().ref('users').push(); // Adiciona um novo usuário com chave única
+
             newUserRef.set({
                 name: name,
                 age: age,
