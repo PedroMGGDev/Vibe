@@ -12,8 +12,16 @@
         <header>
             <h1>Vibe</h1>
         </header>
-        
-        <div class="profile-container">
+
+        <!-- Tela de animação "Procurando perfil" -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="circle-animation"></div>
+            <div class="circle-animation"></div>
+            <p>Procurando perfil...</p>
+        </div>
+
+        <!-- Container dos perfis -->
+        <div class="profile-container hidden">
             <!-- Perfis Dinâmicos -->
             <div id="profile-1" class="profile">
                 <img src="Samuel.png" alt="Samuel">
@@ -48,12 +56,12 @@
             </div>
         </div>
 
-        <div class="actions">
+        <div class="actions hidden">
             <button id="dislike-button">👎</button>
             <button id="like-button">👍</button>
         </div>
 
-        <footer>
+        <footer class="hidden">
             <button id="reset-button">Reiniciar</button>
         </footer>
     </div>
