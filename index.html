@@ -41,10 +41,7 @@
             alert(`Nome: ${name}, Idade: ${age}, Profissão: ${profession}`);
 
             // Redireciona para a página de perfis
-            setTimeout(() => {
-                alert("Redirecionando para profiles.html...");
-                window.location.assign('profiles.html'); // Redireciona para a página de perfis após os dados serem capturados
-            }, 500); // Aguarda 500ms antes de redirecionar
+            window.location.href = 'profiles.html'; // Redireciona para a página de perfis
         });
     </script>
 </body>
