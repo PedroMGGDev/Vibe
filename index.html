@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulário Firebase</title>
   <script type="module">
-    // Import the functions you need from the SDKs you need
+    // Importando as funções do Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-    // Sua configuração do Firebase
+    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
       authDomain: "groupbuy-9e93e.firebaseapp.com",
@@ -23,20 +23,23 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Função para enviar dados para o Firestore
+    // Função para enviar dados
     async function enviarDados() {
       const nome = document.getElementById("nome").value;
       const email = document.getElementById("email").value;
       const idade = document.getElementById("idade").value;
 
-      // Verificar se os campos estão preenchidos
+      // Alerta antes de qualquer ação
+      alert("Iniciando o envio dos dados...");
+
+      // Verificando se os campos estão preenchidos
       if (!nome || !email || !idade) {
         alert("Todos os campos são obrigatórios!");
         return;
       }
 
       try {
-        // Enviar os dados para o Firestore
+        // Enviando os dados para o Firestore
         await addDoc(collection(db, "usuarios"), {
           nome: nome,
           email: email,
@@ -46,11 +49,13 @@
         // Alerta de sucesso
         alert("Dados enviados com sucesso!");
 
-        // Redirecionar para a página profiles.html após o envio
-        window.location.href = "profiles.html";
+        // Redirecionando para a página profiles.html após o envio
+        setTimeout(function() {
+          window.location.href = "profiles.html";  // Atraso para garantir que o alerta apareça antes
+        }, 500);  // 500ms de atraso
 
       } catch (e) {
-        // Caso ocorra algum erro
+        // Alerta caso haja erro no envio
         alert("Erro ao enviar os dados: " + e);
       }
     }
