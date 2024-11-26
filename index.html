@@ -82,67 +82,78 @@
     <p><a href="esqueceu-senha.html">Esqueceu sua senha?</a></p>
   </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
-      authDomain: "groupbuy-9e93e.firebaseapp.com",
-      projectId: "groupbuy-9e93e",
-      storageBucket: "groupbuy-9e93e.appspot.com",
-      messagingSenderId: "1093381465844",
-      appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
-    };
+  // Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
+    authDomain: "groupbuy-9e93e.firebaseapp.com",
+    projectId: "groupbuy-9e93e",
+    storageBucket: "groupbuy-9e93e.appspot.com",
+    messagingSenderId: "1093381465844",
+    appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
+  };
 
-    // Inicializar o Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+  // Inicializar o Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    const form = document.getElementById('form');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  const form = document.getElementById('form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      // Captura os dados do formulário
-      const nome = document.getElementById('nome').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const telefone = document.getElementById('telefone').value.trim();
-      const senha = document.getElementById('senha').value.trim();
-      const confirmaSenha = document.getElementById('confirmaSenha').value.trim();
+    // Captura os dados do formulário
+    const nome = document.getElementById('nome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const telefone = document.getElementById('telefone').value.trim();
+    const senha = document.getElementById('senha').value.trim();
+    const confirmaSenha = document.getElementById('confirmaSenha').value.trim();
 
-      if (senha !== confirmaSenha) {
-        alert("As senhas não conferem! Por favor, corrija.");
+    if (senha !== confirmaSenha) {
+      alert("As senhas não conferem! Por favor, corrija.");
+      return;
+    }
+
+    try {
+      const usuariosRef = collection(db, "usuarios");
+
+      // Consulta para verificar se o e-mail já existe
+      const emailQuery = query(usuariosRef, where("email", "==", email));
+      const emailSnapshot = await getDocs(emailQuery);
+
+      if (!emailSnapshot.empty) {
+        alert("E-mail já cadastrado! Por favor, use outro e-mail.");
         return;
       }
 
-      try {
-        // Verifica se o e-mail ou telefone já estão cadastrados
-        const usuariosRef = collection(db, "usuarios");
-        const q = query(usuariosRef, where("email", "==", email), where("telefone", "==", telefone));
-        const querySnapshot = await getDocs(q);
+      // Consulta para verificar se o telefone já existe
+      const telefoneQuery = query(usuariosRef, where("telefone", "==", telefone));
+      const telefoneSnapshot = await getDocs(telefoneQuery);
 
-        if (!querySnapshot.empty) {
-          alert("E-mail ou telefone já cadastrados! Por favor, use outros dados.");
-          return;
-        }
-
-        // Adiciona os dados ao Firestore
-        const docRef = await addDoc(usuariosRef, {
-          nome: nome,
-          email: email,
-          telefone: telefone,
-          senha: senha // **Nota**: Nunca armazene senhas em texto puro!
-        });
-
-        alert("Cadastro realizado com sucesso!");
-        form.reset(); // Limpa o formulário após o cadastro
-        window.location.href = 'profiles.html';
-      } catch (e) {
-        console.error("Erro ao cadastrar: ", e);
-        alert("Erro ao cadastrar: " + e.message);
+      if (!telefoneSnapshot.empty) {
+        alert("Telefone já cadastrado! Por favor, use outro telefone.");
+        return;
       }
-    });
-  </script>
+
+      // Adiciona os dados ao Firestore
+      const docRef = await addDoc(usuariosRef, {
+        nome: nome,
+        email: email,
+        telefone: telefone,
+        senha: senha // **Nota**: Nunca armazene senhas em texto puro!
+      });
+
+      alert("Cadastro realizado com sucesso!");
+      form.reset(); // Limpa o formulário após o cadastro
+      window.location.href = 'profiles.html';
+    } catch (e) {
+      console.error("Erro ao cadastrar: ", e);
+      alert("Erro ao cadastrar: " + e.message);
+    }
+  });
+</script>
+
 </body>
 </html>
