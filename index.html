@@ -4,28 +4,70 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro Firebase</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 <body>
   <h1>Formulário de Cadastro</h1>
 
   <!-- Formulário de entrada de dados -->
   <form id="form">
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" required>
-    <br><br>
+    <label for="nome">Nome Completo:</label>
+    <input type="text" id="nome" placeholder="Digite seu nome completo" required>
 
     <label for="email">E-mail:</label>
-    <input type="email" id="email" required>
-    <br><br>
+    <input type="email" id="email" placeholder="Digite seu e-mail" required>
 
-    <button type="submit">Enviar</button>
+    <label for="telefone">Telefone:</label>
+    <input type="tel" id="telefone" placeholder="Digite seu telefone (ex.: 11999999999)" pattern="[0-9]{11}" required>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" placeholder="Digite sua senha" minlength="6" required>
+
+    <label for="confirmaSenha">Confirme sua Senha:</label>
+    <input type="password" id="confirmaSenha" placeholder="Confirme sua senha" minlength="6" required>
+
+    <button type="submit">Cadastrar</button>
   </form>
 
   <!-- Adicionar script do Firebase -->
   <script type="module">
-    // Alerta antes de iniciar o Firebase
-    alert('Iniciando o Firebase...');
-
     // Importar as funções necessárias do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
@@ -50,20 +92,31 @@
       e.preventDefault();
 
       // Captura os dados do formulário
-      const nome = document.getElementById('nome').value;
-      const email = document.getElementById('email').value;
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const telefone = document.getElementById('telefone').value.trim();
+      const senha = document.getElementById('senha').value.trim();
+      const confirmaSenha = document.getElementById('confirmaSenha').value.trim();
+
+      // Validações básicas
+      if (senha !== confirmaSenha) {
+        alert("As senhas não conferem! Por favor, corrija.");
+        return;
+      }
 
       // Adiciona os dados ao Firestore
       try {
         const docRef = await addDoc(collection(db, "usuarios"), {
           nome: nome,
-          email: email
+          email: email,
+          telefone: telefone,
+          senha: senha // **Nota**: Não é seguro salvar senhas diretamente assim!
         });
-        alert("Dados enviados com sucesso!");
+        alert("Cadastro realizado com sucesso!");
+        form.reset(); // Limpa o formulário após o cadastro
         window.location.href = 'profiles.html';
-// Alerta de sucesso
       } catch (e) {
-        alert("Erro ao enviar os dados: " + e.message); // Alerta de erro
+        alert("Erro ao cadastrar: " + e.message);
       }
     });
   </script>
