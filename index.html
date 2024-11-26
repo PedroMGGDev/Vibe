@@ -3,9 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulário Firebase</title>
+  <title>Cadastro Firebase</title>
+</head>
+<body>
+  <h1>Formulário de Cadastro</h1>
+
+  <!-- Formulário de entrada de dados -->
+  <form id="form">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" required>
+    <br><br>
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" required>
+    <br><br>
+
+    <button type="submit">Enviar</button>
+  </form>
+
+  <!-- Adicionar script do Firebase -->
   <script type="module">
-    // Importando as funções do Firebase SDK
+    // Alerta antes de iniciar o Firebase
+    alert('Iniciando o Firebase...');
+
+    // Importar as funções necessárias do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
@@ -19,64 +40,32 @@
       appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
     };
 
-    // Inicializando o Firebase
+    // Inicializar o Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Função para enviar dados
-    async function enviarDados() {
-      const nome = document.getElementById("nome").value;
-      const email = document.getElementById("email").value;
-      const idade = document.getElementById("idade").value;
+    // Função de envio de dados
+    const form = document.getElementById('form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-      // Alerta antes de qualquer ação
-      alert("Iniciando o envio dos dados...");
+      // Captura os dados do formulário
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
 
-      // Verificando se os campos estão preenchidos
-      if (!nome || !email || !idade) {
-        alert("Todos os campos são obrigatórios!");
-        return;
-      }
-
+      // Adiciona os dados ao Firestore
       try {
-        // Enviando os dados para o Firestore
-        await addDoc(collection(db, "usuarios"), {
+        const docRef = await addDoc(collection(db, "usuarios"), {
           nome: nome,
-          email: email,
-          idade: idade
+          email: email
         });
-
-        // Alerta de sucesso
         alert("Dados enviados com sucesso!");
-
-        // Redirecionando para a página profiles.html após o envio
-        setTimeout(function() {
-          window.location.href = "profiles.html";  // Atraso para garantir que o alerta apareça antes
-        }, 500);  // 500ms de atraso
-
+        window.location.href = 'profiles.html';
+// Alerta de sucesso
       } catch (e) {
-        // Alerta caso haja erro no envio
-        alert("Erro ao enviar os dados: " + e);
+        alert("Erro ao enviar os dados: " + e.message); // Alerta de erro
       }
-    }
+    });
   </script>
-</head>
-<body>
-  <h2>Formulário de Cadastro</h2>
-  <form onsubmit="event.preventDefault(); enviarDados();">
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" required>
-    <br><br>
-
-    <label for="email">E-mail:</label>
-    <input type="email" id="email" required>
-    <br><br>
-
-    <label for="idade">Idade:</label>
-    <input type="number" id="idade" required>
-    <br><br>
-
-    <button type="submit">Enviar</button>
-  </form>
 </body>
 </html>
