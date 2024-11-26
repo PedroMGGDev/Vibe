@@ -58,7 +58,6 @@
 <body>
   <h1>Formulário de Cadastro</h1>
 
-  <!-- Formulário de entrada de dados -->
   <form id="form">
     <label for="nome">Nome Completo:</label>
     <input type="text" id="nome" placeholder="Digite seu nome completo" required>
@@ -78,17 +77,14 @@
     <button type="submit">Cadastrar</button>
   </form>
 
-  <!-- Links para Login e Esqueceu a Senha -->
   <div class="links">
     <p><a href="login.html">Já tem uma conta? Faça login</a></p>
     <p><a href="esqueceu-senha.html">Esqueceu sua senha?</a></p>
   </div>
 
-  <!-- Adicionar script do Firebase -->
   <script type="module">
-    // Importar as funções necessárias do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+    import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
     // Configuração do Firebase
     const firebaseConfig = {
@@ -104,7 +100,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Função de envio de dados
     const form = document.getElementById('form');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -116,24 +111,35 @@
       const senha = document.getElementById('senha').value.trim();
       const confirmaSenha = document.getElementById('confirmaSenha').value.trim();
 
-      // Validações básicas
       if (senha !== confirmaSenha) {
         alert("As senhas não conferem! Por favor, corrija.");
         return;
       }
 
-      // Adiciona os dados ao Firestore
       try {
-        const docRef = await addDoc(collection(db, "usuarios"), {
+        // Verifica se o e-mail ou telefone já estão cadastrados
+        const usuariosRef = collection(db, "usuarios");
+        const q = query(usuariosRef, where("email", "==", email), where("telefone", "==", telefone));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          alert("E-mail ou telefone já cadastrados! Por favor, use outros dados.");
+          return;
+        }
+
+        // Adiciona os dados ao Firestore
+        const docRef = await addDoc(usuariosRef, {
           nome: nome,
           email: email,
           telefone: telefone,
-          senha: senha // **Nota**: Não é seguro salvar senhas diretamente assim!
+          senha: senha // **Nota**: Nunca armazene senhas em texto puro!
         });
+
         alert("Cadastro realizado com sucesso!");
         form.reset(); // Limpa o formulário após o cadastro
         window.location.href = 'profiles.html';
       } catch (e) {
+        console.error("Erro ao cadastrar: ", e);
         alert("Erro ao cadastrar: " + e.message);
       }
     });
