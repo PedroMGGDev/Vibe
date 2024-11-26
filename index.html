@@ -1,68 +1,69 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro no Firebase</title>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro Firebase</title>
 </head>
 <body>
+  <h1>Formulário de Cadastro</h1>
 
-    <h1>Cadastro de Usuário</h1>
-    <form id="userForm" onsubmit="saveData(event)">
-        <label for="name">Nome:</label>
-        <input type="text" id="name" required><br><br>
-        
-        <label for="email">Email:</label>
-        <input type="email" id="email" required><br><br>
-        
-        <button type="submit">Enviar</button>
-    </form>
+  <!-- Formulário de entrada de dados -->
+  <form id="form">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" required>
+    <br><br>
 
-    <script>
-      // Configuração do Firebase
-      var firebaseConfig = {
-        apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
-        authDomain: "groupbuy-9e93e.firebaseapp.com",
-        databaseURL: "https://groupbuy-9e93e-default-rtdb.firebaseio.com",
-        projectId: "groupbuy-9e93e",
-        storageBucket: "groupbuy-9e93e.appspot.com",
-        messagingSenderId: "1093381465844",
-        appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
-      };
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" required>
+    <br><br>
 
-      // Inicializando o Firebase
-      firebase.initializeApp(firebaseConfig);
-      var database = firebase.database();
+    <button type="submit">Enviar</button>
+  </form>
 
-      // Função para salvar os dados
-      function saveData(event) {
-        event.preventDefault();
+  <!-- Adicionar script do Firebase -->
+  <script type="module">
+    // Alerta antes de iniciar o Firebase
+    alert('Iniciando o Firebase...');
 
-        // Captura dos dados do formulário
-        var name = document.getElementById('name').value;
-        var email = document.getElementById('email').value;
+    // Importar as funções necessárias do Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-        // Dados do usuário
-        var newUser = {
-          name: name,
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
+      authDomain: "groupbuy-9e93e.firebaseapp.com",
+      projectId: "groupbuy-9e93e",
+      storageBucket: "groupbuy-9e93e.appspot.com",
+      messagingSenderId: "1093381465844",
+      appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
+    };
+
+    // Inicializar o Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Função de envio de dados
+    const form = document.getElementById('form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Captura os dados do formulário
+      const nome = document.getElementById('nome').value;
+      const email = document.getElementById('email').value;
+
+      // Adiciona os dados ao Firestore
+      try {
+        const docRef = await addDoc(collection(db, "usuarios"), {
+          nome: nome,
           email: email
-        };
-
-        // Referência ao banco de dados
-        var userRef = database.ref('users/' + Date.now());  // Usando o timestamp para garantir uma chave única
-
-        // Salvando no Firebase
-        userRef.set(newUser)
-          .then(() => {
-            alert('Dados enviados com sucesso!');
-          })
-          .catch((error) => {
-            alert('Erro ao enviar os dados: ' + error.message);
-          });
+        });
+        alert("Dados enviados com sucesso!"); // Alerta de sucesso
+      } catch (e) {
+        alert("Erro ao enviar os dados: " + e.message); // Alerta de erro
       }
-    </script>
-
+    });
+  </script>
 </body>
 </html>
