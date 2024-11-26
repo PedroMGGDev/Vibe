@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Vendedor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cadastro de Vendedor</h1>
+
+  <form id="form">
+    <label for="nome">Nome da Empresa:</label>
+    <input type="text" id="nome" placeholder="Digite o nome da empresa" required>
+
+    <label for="cnpj">CNPJ:</label>
+    <input type="text" id="cnpj" placeholder="Digite o CNPJ (ex.: 00.000.000/0001-00)" required>
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" placeholder="Digite o e-mail" required>
+
+    <label for="telefone">Telefone:</label>
+    <input type="tel" id="telefone" placeholder="Digite o telefone (ex.: 11999999999)" pattern="[0-9]{11}" required>
+
+    <label for="endereco">Endereço:</label>
+    <input type="text" id="endereco" placeholder="Digite o endereço da empresa" required>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" placeholder="Digite sua senha" minlength="6" required>
+
+    <label for="confirmaSenha">Confirme a Senha:</label>
+    <input type="password" id="confirmaSenha" placeholder="Confirme sua senha" minlength="6" required>
+
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+  // Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
+    authDomain: "groupbuy-9e93e.firebaseapp.com",
+    projectId: "groupbuy-9e93e",
+    storageBucket: "groupbuy-9e93e.appspot.com",
+    messagingSenderId: "1093381465844",
+    appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
+  };
+
+  // Inicializar o Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const form = document.getElementById('form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Captura os dados do formulário
+    const nome = document.getElementById('nome').value.trim();
+    const cnpj = document.getElementById('cnpj').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const telefone = document.getElementById('telefone').value.trim();
+    const endereco = document.getElementById('endereco').value.trim();
+    const senha = document.getElementById('senha').value.trim();
+    const confirmaSenha = document.getElementById('confirmaSenha').value.trim();
+
+    if (senha !== confirmaSenha) {
+      alert("As senhas não conferem! Por favor, corrija.");
+      return;
+    }
+
+    try {
+      const vendedoresRef = collection(db, "vendedores");
+
+      // Verifica se o CNPJ já está cadastrado
+      const cnpjQuery = query(vendedoresRef, where("cnpj", "==", cnpj));
+      const cnpjSnapshot = await getDocs(cnpjQuery);
+
+      if (!cnpjSnapshot.empty) {
+        alert("CNPJ já cadastrado! Por favor, use outro CNPJ.");
+        return;
+      }
+
+      // Verifica se o e-mail já está cadastrado
+      const emailQuery = query(vendedoresRef, where("email", "==", email));
+      const emailSnapshot = await getDocs(emailQuery);
+
+      if (!emailSnapshot.empty) {
+        alert("E-mail já cadastrado! Por favor, use outro e-mail.");
+        return;
+      }
+
+      // Verifica se o telefone já está cadastrado
+      const telefoneQuery = query(vendedoresRef, where("telefone", "==", telefone));
+      const telefoneSnapshot = await getDocs(telefoneQuery);
+
+      if (!telefoneSnapshot.empty) {
+        alert("Telefone já cadastrado! Por favor, use outro telefone.");
+        return;
+      }
+
+      // Adiciona os dados ao Firestore
+      const docRef = await addDoc(vendedoresRef, {
+        nome: nome,
+        cnpj: cnpj,
+        email: email,
+        telefone: telefone,
+        endereco: endereco,
+        senha: senha // **Nota**: Nunca armazene senhas em texto puro!
+      });
+
+      alert("Cadastro de vendedor realizado com sucesso!");
+      form.reset(); // Limpa o formulário após o cadastro
+    } catch (e) {
+      console.error("Erro ao cadastrar: ", e);
+      alert("Erro ao cadastrar: " + e.message);
+    }
+  });
+  </script>
+</body>
+</html>
