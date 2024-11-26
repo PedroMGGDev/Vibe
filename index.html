@@ -9,7 +9,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-    // Your web app's Firebase configuration
+    // Sua configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
       authDomain: "groupbuy-9e93e.firebaseapp.com",
@@ -19,7 +19,7 @@
       appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
     };
 
-    // Initialize Firebase
+    // Inicializando o Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
@@ -29,24 +29,28 @@
       const email = document.getElementById("email").value;
       const idade = document.getElementById("idade").value;
 
+      // Verificar se os campos estão preenchidos
       if (!nome || !email || !idade) {
         alert("Todos os campos são obrigatórios!");
         return;
       }
 
       try {
+        // Enviar os dados para o Firestore
         await addDoc(collection(db, "usuarios"), {
           nome: nome,
           email: email,
           idade: idade
         });
 
+        // Alerta de sucesso
         alert("Dados enviados com sucesso!");
 
-        // Redirecionar para a página profiles.html
+        // Redirecionar para a página profiles.html após o envio
         window.location.href = "profiles.html";
 
       } catch (e) {
+        // Caso ocorra algum erro
         alert("Erro ao enviar os dados: " + e);
       }
     }
