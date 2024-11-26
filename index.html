@@ -1,94 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário Firebase</title>
+  <!-- Adicionando o Firebase -->
+  <script type="module">
+    // Importando as funções do Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
-    <!-- Adicionar o link para o Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-analytics.js"></script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
+      authDomain: "groupbuy-9e93e.firebaseapp.com",
+      databaseURL: "https://groupbuy-9e93e-default-rtdb.firebaseio.com",
+      projectId: "groupbuy-9e93e",
+      storageBucket: "groupbuy-9e93e.appspot.com",
+      messagingSenderId: "1093381465844",
+      appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
+    };
+
+    // Inicializando o Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Função para enviar os dados para o Firebase
+    function saveData(event) {
+      event.preventDefault();  // Impede o envio normal do formulário
+
+      // Captura os dados do formulário
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+
+      // Objeto com os dados a serem salvos
+      const newUser = {
+        name: name,
+        email: email
+      };
+
+      // Referência ao banco de dados no Firebase
+      const userRef = ref(database, 'users/' + Date.now());  // Usando o timestamp para criar uma chave única
+
+      // Salvando os dados no Firebase
+      set(userRef, newUser)
+        .then(() => {
+          alert('Dados enviados com sucesso!');
+        })
+        .catch((error) => {
+          alert('Erro ao enviar os dados: ' + error.message);
+        });
+    }
+  </script>
 </head>
 <body>
-    <h2>Formulário de Cadastro</h2>
-    <form id="signup-form">
-        <label for="name">Nome:</label>
-        <input type="text" id="name" required><br><br>
-
-        <label for="age">Idade:</label>
-        <input type="number" id="age" required><br><br>
-
-        <label for="profession">Profissão:</label>
-        <input type="text" id="profession" required><br><br>
-
-        <button type="submit">Cadastrar</button>
-    </form>
-
-    <!-- Script JS para manipulação -->
-    <script>
-        // Importa as funções necessárias do SDKs do Firebase
-        import { initializeApp } from "firebase/app";
-        import { getDatabase, ref, set } from "firebase/database"; // Importação para manipulação do Realtime Database
-        import { getAnalytics } from "firebase/analytics"; // Para obter o Analytics
-
-        // Sua configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAFqEgc2jaOafTVsCwL5Zt65DHFHttcjok",
-            authDomain: "vibe-8002b.firebaseapp.com",
-            databaseURL: "https://vibe-8002b-default-rtdb.firebaseio.com",
-            projectId: "vibe-8002b",
-            storageBucket: "vibe-8002b.firebasestorage.app",
-            messagingSenderId: "1031587492132",
-            appId: "1:1031587492132:web:9e9a1ce28ec6a596d843b1",
-            measurementId: "G-JVPNDD1HM5"
-        };
-
-        // Inicializa o Firebase
-        const app = initializeApp(firebaseConfig);
-
-        // Obter uma referência do Realtime Database
-        const database = getDatabase(app);
-
-        // Obtém o formulário de cadastro
-        const signupForm = document.getElementById('signup-form');
-
-        // Função que lida com o envio do formulário
-        signupForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Impede o recarregamento da página
-
-            // Captura os valores do formulário
-            const name = document.getElementById('name').value;
-            const age = document.getElementById('age').value;
-            const profession = document.getElementById('profession').value;
-
-            // Exibe um alerta com os dados do formulário
-            alert(`Dados Capturados: Nome - ${name}, Idade - ${age}, Profissão - ${profession}`);
-
-            // Tenta salvar os dados no Firebase
-            try {
-                const newUserRef = ref(database, 'users/' + Date.now()); // Cria uma chave única para cada usuário
-                set(newUserRef, {
-                    name: name,
-                    age: age,
-                    profession: profession
-                }).then(() => {
-                    // Alerta para confirmar que os dados foram salvos
-                    alert('Dados salvos no banco de dados com sucesso!');
-
-                    // Após salvar, redireciona para a página de perfis após uma pequena pausa
-                    setTimeout(function() {
-                        window.location.href = 'profiles.html'; // Redireciona para a página de perfis
-                    }, 1000); // Pausa de 1 segundo antes de redirecionar
-                }).catch((error) => {
-                    // Caso ocorra um erro ao salvar os dados no Firebase
-                    alert(`Erro ao salvar os dados: ${error.message}`);
-                });
-            } catch (error) {
-                // Se ocorrer algum erro no processo
-                alert(`Erro inesperado: ${error.message}`);
-            }
-        });
-    </script>
+  <h1>Formulário de Cadastro</h1>
+  <form id="userForm" onsubmit="saveData(event)">
+    <label for="name">Nome:</label>
+    <input type="text" id="name" required>
+    
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+    
+    <button type="submit">Enviar</button>
+  </form>
 </body>
 </html>
