@@ -41,6 +41,18 @@
     button:hover {
       background-color: #218838;
     }
+    .links {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .links a {
+      text-decoration: none;
+      color: #007bff;
+      margin: 0 10px;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -65,6 +77,12 @@
 
     <button type="submit">Cadastrar</button>
   </form>
+
+  <!-- Links para Login e Esqueceu a Senha -->
+  <div class="links">
+    <p><a href="login.html">Já tem uma conta? Faça login</a></p>
+    <p><a href="esqueceu-senha.html">Esqueceu sua senha?</a></p>
+  </div>
 
   <!-- Adicionar script do Firebase -->
   <script type="module">
