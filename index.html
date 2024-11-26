@@ -4,27 +4,139 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - GroupBuy</title>
+  <style>
+    /* Estilos gerais */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Container principal */
+    .login-container {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    /* Títulos */
+    h1 {
+      color: #e74c3c;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      color: #555;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    /* Estilização do formulário */
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #c0392b;
+    }
+
+    /* Links */
+    p {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    a {
+      color: #3498db;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: #2980b9;
+    }
+
+    /* Mensagem de erro */
+    .error-message {
+      color: #e74c3c;
+      font-weight: bold;
+      margin-top: 15px;
+      display: none;
+    }
+
+    /* Imagem de erro */
+    .error-image {
+      width: 80px;
+      margin-top: 15px;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <h1>Bem-vindo ao GroupBuy</h1>
-  <h2>Faça seu Login</h2>
+  <div class="login-container">
+    <h1>Bem-vindo ao GroupBuy</h1>
+    <h2>Faça seu Login</h2>
 
-  <!-- Formulário de Login -->
-  <form id="loginForm">
-    <label for="email">E-mail:</label>
-    <input type="email" id="email" placeholder="Digite seu e-mail" required>
-    <br><br>
+    <!-- Formulário de Login -->
+    <form id="loginForm">
+      <label for="email">E-mail:</label>
+      <input type="email" id="email" placeholder="Digite seu e-mail" required>
 
-    <label for="senha">Senha:</label>
-    <input type="password" id="senha" placeholder="Digite sua senha" required>
-    <br><br>
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" placeholder="Digite sua senha" required>
 
-    <button type="submit">Entrar</button>
-  </form>
+      <button type="submit">Entrar</button>
+    </form>
 
-  <br>
-  <p>Esqueceu sua senha? <a href="forgot-password.html">Clique aqui</a></p>
-  <p>Não tem uma conta? <a href="register.html">Cadastre-se agora</a></p>
+    <!-- Links -->
+    <p>Esqueceu sua senha? <a href="forgot-password.html">Clique aqui</a></p>
+    <p>Não tem uma conta? <a href="register.html">Cadastre-se agora</a></p>
+
+    <!-- Mensagem e imagem de erro -->
+    <div id="errorContainer">
+      <p class="error-message" id="errorMessage">E-mail ou senha incorretos. Por favor, tente novamente.</p>
+      <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="Erro" class="error-image" id="errorImage">
+    </div>
+  </div>
 
   <!-- Script do Firebase -->
   <script type="module">
@@ -46,6 +158,9 @@
     const db = getFirestore(app);
 
     const loginForm = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+    const errorImage = document.getElementById('errorImage');
+
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -64,7 +179,9 @@
           alert("Login realizado com sucesso!");
           window.location.href = 'dashboard.html'; // Redireciona para o painel principal
         } else {
-          alert("E-mail ou senha incorretos. Por favor, tente novamente.");
+          // Exibe a mensagem e a imagem de erro
+          errorMessage.style.display = 'block';
+          errorImage.style.display = 'block';
         }
       } catch (e) {
         console.error("Erro ao fazer login: ", e);
