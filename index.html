@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Produto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cadastro de Produto</h1>
+
+  <form id="product-form">
+    <label for="product-name">Nome do Produto:</label>
+    <input type="text" id="product-name" placeholder="Nome do produto" required>
+
+    <label for="product-price">Preço:</label>
+    <input type="number" id="product-price" placeholder="Preço do produto" required>
+
+    <label for="product-description">Descrição:</label>
+    <input type="text" id="product-description" placeholder="Descrição do produto" required>
+
+    <button type="submit">Cadastrar Produto</button>
+  </form>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
+      authDomain: "groupbuy-9e93e.firebaseapp.com",
+      projectId: "groupbuy-9e93e",
+      storageBucket: "groupbuy-9e93e.appspot.com",
+      messagingSenderId: "1093381465844",
+      appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
+    };
+
+    // Inicializar o Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const productForm = document.getElementById('product-form');
+    const productName = document.getElementById('product-name');
+    const productPrice = document.getElementById('product-price');
+    const productDescription = document.getElementById('product-description');
+
+    // Verificar se o usuário está logado
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        alert("Você precisa estar logado para cadastrar produtos.");
+        window.location.href = "login.html";  // Redireciona para a tela de login caso o usuário não esteja autenticado
+      }
+    });
+
+    // Função de cadastro de produto
+    productForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const user = auth.currentUser;
+      if (!user) {
+        alert('Você precisa estar logado para cadastrar produtos.');
+        return;
+      }
+
+      const nomeProduto = productName.value.trim();
+      const precoProduto = productPrice.value.trim();
+      const descricaoProduto = productDescription.value.trim();
+
+      try {
+        const produtosRef = collection(db, "produtos");
+
+        // Adicionando o produto no Firestore junto com o e-mail do usuário
+        await addDoc(produtosRef, {
+          nome: nomeProduto,
+          preco: precoProduto,
+          descricao: descricaoProduto,
+          emailVendedor: user.email,  // Associa o e-mail do usuário ao produto
+        });
+
+        alert("Produto cadastrado com sucesso!");
+        productForm.reset();  // Limpa o formulário de produto
+      } catch (e) {
+        console.error("Erro ao cadastrar produto: ", e);
+        alert("Erro ao cadastrar produto: " + e.message);
+      }
+    });
+  </script>
+</body>
+</html>
