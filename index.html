@@ -84,13 +84,16 @@
     const productPrice = document.getElementById('product-price');
     const productDescription = document.getElementById('product-description');
 
-    // Verificar se o usuário está logado
-    onAuthStateChanged(auth, (user) => {
+    // Função para verificar se o usuário está logado
+    async function checkAuth() {
+      const user = auth.currentUser;
       if (!user) {
-        alert("Você precisa estar logado para cadastrar produtos.");
-        window.location.href = "login.html";  // Redireciona para a tela de login caso o usuário não esteja autenticado
+        window.location.href = "login.html";  // Redireciona para a tela de login
       }
-    });
+    }
+
+    // Chama a função de verificação de autenticação quando a página é carregada
+    window.onload = checkAuth;
 
     // Função de cadastro de produto
     productForm.addEventListener('submit', async (e) => {
@@ -99,6 +102,7 @@
       const user = auth.currentUser;
       if (!user) {
         alert('Você precisa estar logado para cadastrar produtos.');
+        window.location.href = "login.html";  // Se o usuário não estiver logado, redireciona para login
         return;
       }
 
@@ -127,3 +131,4 @@
   </script>
 </body>
 </html>
+
