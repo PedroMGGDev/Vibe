@@ -1,68 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulário Firebase</title>
-  <!-- Adicionando o Firebase -->
-  <script type="module">
-    // Importando as funções do Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
-
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
-      authDomain: "groupbuy-9e93e.firebaseapp.com",
-      databaseURL: "https://groupbuy-9e93e-default-rtdb.firebaseio.com",
-      projectId: "groupbuy-9e93e",
-      storageBucket: "groupbuy-9e93e.appspot.com",
-      messagingSenderId: "1093381465844",
-      appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
-    };
-
-    // Inicializando o Firebase
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    // Função para enviar os dados para o Firebase
-    function saveData(event) {
-      event.preventDefault();  // Impede o envio normal do formulário
-
-      // Captura os dados do formulário
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-
-      // Objeto com os dados a serem salvos
-      const newUser = {
-        name: name,
-        email: email
-      };
-
-      // Referência ao banco de dados no Firebase
-      const userRef = ref(database, 'users/' + Date.now());  // Usando o timestamp para criar uma chave única
-
-      // Salvando os dados no Firebase
-      set(userRef, newUser)
-        .then(() => {
-          alert('Dados enviados com sucesso!');
-        })
-        .catch((error) => {
-          alert('Erro ao enviar os dados: ' + error.message);
-        });
-    }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro no Firebase</title>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
 </head>
 <body>
-  <h1>Formulário de Cadastro</h1>
-  <form id="userForm" onsubmit="saveData(event)">
-    <label for="name">Nome:</label>
-    <input type="text" id="name" required>
-    
-    <label for="email">Email:</label>
-    <input type="email" id="email" required>
-    
-    <button type="submit">Enviar</button>
-  </form>
+
+    <h1>Cadastro de Usuário</h1>
+    <form id="userForm" onsubmit="saveData(event)">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" required><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br><br>
+        
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+      // Configuração do Firebase
+      var firebaseConfig = {
+        apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
+        authDomain: "groupbuy-9e93e.firebaseapp.com",
+        databaseURL: "https://groupbuy-9e93e-default-rtdb.firebaseio.com",
+        projectId: "groupbuy-9e93e",
+        storageBucket: "groupbuy-9e93e.appspot.com",
+        messagingSenderId: "1093381465844",
+        appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1"
+      };
+
+      // Inicializando o Firebase
+      firebase.initializeApp(firebaseConfig);
+      var database = firebase.database();
+
+      // Função para salvar os dados
+      function saveData(event) {
+        event.preventDefault();
+
+        // Captura dos dados do formulário
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+
+        // Dados do usuário
+        var newUser = {
+          name: name,
+          email: email
+        };
+
+        // Referência ao banco de dados
+        var userRef = database.ref('users/' + Date.now());  // Usando o timestamp para garantir uma chave única
+
+        // Salvando no Firebase
+        userRef.set(newUser)
+          .then(() => {
+            alert('Dados enviados com sucesso!');
+          })
+          .catch((error) => {
+            alert('Erro ao enviar os dados: ' + error.message);
+          });
+      }
+    </script>
+
 </body>
 </html>
