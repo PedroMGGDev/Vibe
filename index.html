@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GroupBuy - Sua Plataforma de Compras Coletivas</title>
+
+  <!-- Link para o arquivo CSS -->
+  <link rel="stylesheet" href="home.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta name="description" content="GroupBuy é a sua plataforma de compras coletivas, onde você compra mais por menos! Junte-se a amigos e consiga descontos exclusivos.">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container-header">
+      <div class="logo">
+        <a href="/" class="logo-text">GroupBuy</a>
+      </div>
+      <div class="barra-pesquisa">
+        <input type="text" id="pesquisa" placeholder="Pesquise produtos ou categorias..." class="input-pesquisa">
+        <button onclick="pesquisar()" class="btn-pesquisa">🔍</button>
+      </div>
+      <nav class="menu-topo">
+        <ul>
+          <li><a href="/perfil" class="menu-item">Perfil</a></li>
+          <li><a href="/carrinho" class="menu-item">Carrinho</a></li>
+          <li><a href="/ofertas" class="menu-item">Ofertas</a></li>
+          <li><a href="/notificacoes" class="menu-item">Notificações</a></li>
+          <li><a href="/login" class="menu-item login-btn">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BANNER PRINCIPAL -->
+  <section class="banner">
+    <div class="banner-carousel">
+      <img src="banner1.jpg" alt="Promoções de fim de ano" class="banner-img">
+      <img src="banner2.jpg" alt="Descontos imperdíveis em produtos de tecnologia" class="banner-img">
+      <img src="banner3.jpg" alt="Ofertas relâmpago em moda e beleza" class="banner-img">
+    </div>
+    <div class="cta-banner">
+      <button onclick="window.location.href='/ofertas'" class="btn-cta">Confira as Ofertas</button>
+    </div>
+  </section>
+
+  <!-- CATEGORIAS POPULARES -->
+  <section class="categorias">
+    <div class="container-categorias">
+      <h2 class="title">Categorias Populares</h2>
+      <div class="categoria-item">
+        <img src="tecnologia.jpg" alt="Tecnologia" class="img-categoria">
+        <p class="descricao-categoria">Tecnologia</p>
+      </div>
+      <div class="categoria-item">
+        <img src="moda.jpg" alt="Moda" class="img-categoria">
+        <p class="descricao-categoria">Moda</p>
+      </div>
+      <div class="categoria-item">
+        <img src="beleza.jpg" alt="Beleza" class="img-categoria">
+        <p class="descricao-categoria">Beleza</p>
+      </div>
+      <div class="categoria-item">
+        <img src="alimentos.jpg" alt="Alimentos" class="img-categoria">
+        <p class="descricao-categoria">Alimentos</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUTOS EM DESTAQUE -->
+  <section class="produtos-destaque">
+    <h2 class="title">Produtos em Destaque</h2>
+    <div class="produtos-container">
+      <div class="produto-item">
+        <img src="produto1.jpg" alt="Produto 1" class="img-produto">
+        <p class="produto-nome">Nome do Produto 1</p>
+        <p class="produto-preco">R$ 100,00</p>
+        <button class="btn-comprar">Comprar</button>
+      </div>
+      <div class="produto-item">
+        <img src="produto2.jpg" alt="Produto 2" class="img-produto">
+        <p class="produto-nome">Nome do Produto 2</p>
+        <p class="produto-preco">R$ 200,00</p>
+        <button class="btn-comprar">Comprar</button>
+      </div>
+      <div class="produto-item">
+        <img src="produto3.jpg" alt="Produto 3" class="img-produto">
+        <p class="produto-nome">Nome do Produto 3</p>
+        <p class="produto-preco">R$ 150,00</p>
+        <button class="btn-comprar">Comprar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTOS -->
+  <section class="depoimentos">
+    <h2 class="title">O que nossos usuários dizem</h2>
+    <div class="depoimento-item">
+      <p class="depoimento-texto">"O GroupBuy é incrível! Consegui produtos com descontos incríveis. Adoro a ideia de comprar em grupo!"</p>
+      <p class="depoimento-usuario">João Silva</p>
+    </div>
+    <div class="depoimento-item">
+      <p class="depoimento-texto">"A plataforma facilita muito as compras, é rápida e segura. Nunca mais comprei sem antes olhar o GroupBuy."</p>
+      <p class="depoimento-usuario">Maria Oliveira</p>
+    </div>
+  </section>
+
+  <!-- CHAMADA PARA AÇÃO -->
+  <section class="cta-footer">
+    <h2 class="title">Pronto para aproveitar as ofertas?</h2>
+    <button onclick="window.location.href='/ofertas'" class="btn-cta-footer">Ver Ofertas</button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container-footer">
+      <p>&copy; 2024 GroupBuy. Todos os direitos reservados.</p>
+      <div class="links-footer">
+        <a href="/sobre" class="footer-link">Sobre</a>
+        <a href="/contato" class="footer-link">Contato</a>
+        <a href="/ajuda" class="footer-link">Ajuda</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts JS -->
+  <script src="home.js"></script>
+
+</body>
+
+</html>
