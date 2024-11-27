@@ -21,7 +21,6 @@
               <i class="fas fa-lock"></i>
               <input type="password" id="senha-login" placeholder="Digite sua senha" required />
             </div>
-            <p id="errorMessage" style="display: none; color: red;">Credenciais inválidas</p>
             <input type="submit" value="Entrar" class="btn solid" />
           </form>
           <form id="signUpForm" class="sign-up-form">
@@ -76,15 +75,20 @@
     </div>
 
     <script>
+      // Alerta ao carregar a página
+      alert("Bem-vindo à página de login e cadastro!");
+
       const sign_in_btn = document.querySelector("#sign-in-btn");
       const sign_up_btn = document.querySelector("#sign-up-btn");
       const container = document.querySelector(".container");
 
       sign_up_btn.addEventListener("click", () => {
+        alert("Alternando para a tela de cadastro.");
         container.classList.add("sign-up-mode");
       });
 
       sign_in_btn.addEventListener("click", () => {
+        alert("Alternando para a tela de login.");
         container.classList.remove("sign-up-mode");
       });
 
@@ -108,17 +112,19 @@
       const loginForm = document.getElementById("loginForm");
       loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+        alert("Tentando fazer login...");
 
         const email = document.getElementById("email-login").value.trim();
         const senha = document.getElementById("senha-login").value.trim();
 
         try {
+          alert("Verificando credenciais...");
           const usuariosRef = collection(db, "usuarios");
           const userQuery = query(usuariosRef, where("email", "==", email), where("senha", "==", senha));
           const userSnapshot = await getDocs(userQuery);
 
           if (!userSnapshot.empty) {
-            alert("Login realizado com sucesso!");
+            alert("Login realizado com sucesso! Redirecionando...");
             window.location.href = "home.html"; // Redireciona para a página inicial
           } else {
             alert("E-mail ou senha inválidos!");
@@ -133,6 +139,7 @@
       const signUpForm = document.getElementById("signUpForm");
       signUpForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+        alert("Tentando realizar cadastro...");
 
         const nome = document.getElementById("nome-cadastro").value.trim();
         const email = document.getElementById("email-cadastro").value.trim();
@@ -146,6 +153,7 @@
         }
 
         try {
+          alert("Verificando se o e-mail já está cadastrado...");
           const usuariosRef = collection(db, "usuarios");
           const emailQuery = query(usuariosRef, where("email", "==", email));
           const emailSnapshot = await getDocs(emailQuery);
@@ -155,8 +163,9 @@
             return;
           }
 
+          alert("Realizando cadastro...");
           await addDoc(usuariosRef, { nome, email, telefone, senha });
-          alert("Cadastro realizado com sucesso!");
+          alert("Cadastro realizado com sucesso! Voltando para a tela de login.");
           signUpForm.reset();
           container.classList.remove("sign-up-mode");
         } catch (error) {
