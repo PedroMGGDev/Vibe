@@ -3,10 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://kit.fontawesome.com/64d58efce2.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="login.css" />
     <title>GroupBuy</title>
   </head>
@@ -14,8 +11,7 @@
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <!-- Formulário de Login -->
-          <form action="#" class="sign-in-form" id="loginForm">
+          <form action="#" id="loginForm" class="sign-in-form">
             <h2 class="title">Entrar</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -25,13 +21,10 @@
               <i class="fas fa-lock"></i>
               <input type="password" id="senha-login" placeholder="Digite sua senha" required />
             </div>
-            <div id="errorMessage" style="display: none; color: red;">Credenciais inválidas!</div>
-            <img id="errorImage" src="img/error.png" alt="Erro" style="display: none; width: 50px;" />
+            <p id="errorMessage" style="display: none; color: red;">Credenciais inválidas</p>
             <input type="submit" value="Entrar" class="btn solid" />
           </form>
-          
-          <!-- Formulário de Cadastro -->
-          <form action="#" class="sign-up-form" id="form">
+          <form action="#" id="signUpForm" class="sign-up-form">
             <h2 class="title">Cadastrar</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
@@ -43,13 +36,7 @@
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input
-                type="tel"
-                id="telefone-cadastro"
-                placeholder="Digite seu telefone (ex.: 11999999999)"
-                pattern="[0-9]{11}"
-                required
-              />
+              <input type="tel" id="telefone-cadastro" placeholder="Digite seu telefone (ex.: 11999999999)" pattern="[0-9]{11}" required />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
@@ -88,6 +75,93 @@
       </div>
     </div>
 
-    <script src="login.js"></script>
+    <script>
+      const sign_in_btn = document.querySelector("#sign-in-btn");
+      const sign_up_btn = document.querySelector("#sign-up-btn");
+      const container = document.querySelector(".container");
+
+      sign_up_btn.addEventListener("click", () => {
+        container.classList.add("sign-up-mode");
+      });
+
+      sign_in_btn.addEventListener("click", () => {
+        container.classList.remove("sign-up-mode");
+      });
+
+      // Firebase configuration
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
+        authDomain: "groupbuy-9e93e.firebaseapp.com",
+        projectId: "groupbuy-9e93e",
+        storageBucket: "groupbuy-9e93e.appspot.com",
+        messagingSenderId: "1093381465844",
+        appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Login logic
+      const loginForm = document.getElementById("loginForm");
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email-login").value.trim();
+        const senha = document.getElementById("senha-login").value.trim();
+
+        try {
+          const usuariosRef = collection(db, "usuarios");
+          const userQuery = query(usuariosRef, where("email", "==", email), where("senha", "==", senha));
+          const userSnapshot = await getDocs(userQuery);
+
+          if (!userSnapshot.empty) {
+            alert("Login realizado com sucesso!");
+            window.location.href = "home.html"; // Redireciona para a página inicial
+          } else {
+            document.getElementById("errorMessage").style.display = "block";
+          }
+        } catch (error) {
+          console.error("Erro ao fazer login: ", error);
+        }
+      });
+
+      // Cadastro logic
+      const signUpForm = document.getElementById("signUpForm");
+      signUpForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const nome = document.getElementById("nome-cadastro").value.trim();
+        const email = document.getElementById("email-cadastro").value.trim();
+        const telefone = document.getElementById("telefone-cadastro").value.trim();
+        const senha = document.getElementById("senha-cadastro").value.trim();
+        const confirmaSenha = document.getElementById("confirmaSenha-cadastro").value.trim();
+
+        if (senha !== confirmaSenha) {
+          alert("As senhas não conferem!");
+          return;
+        }
+
+        try {
+          const usuariosRef = collection(db, "usuarios");
+          const emailQuery = query(usuariosRef, where("email", "==", email));
+          const emailSnapshot = await getDocs(emailQuery);
+
+          if (!emailSnapshot.empty) {
+            alert("E-mail já cadastrado!");
+            return;
+          }
+
+          await addDoc(usuariosRef, { nome, email, telefone, senha });
+          alert("Cadastro realizado com sucesso!");
+          signUpForm.reset();
+          container.classList.remove("sign-up-mode");
+        } catch (error) {
+          console.error("Erro ao cadastrar: ", error);
+        }
+      });
+    </script>
   </body>
 </html>
