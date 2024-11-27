@@ -1,9 +1,7 @@
-// Seletores de botões
 const sign_in_btn = document.querySelector("#sign-in-btn");
 const sign_up_btn = document.querySelector("#sign-up-btn");
 const container = document.querySelector(".container");
 
-// Alternar modos entre login e cadastro
 sign_up_btn.addEventListener("click", () => {
   container.classList.add("sign-up-mode");
 });
