@@ -3,10 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://kit.fontawesome.com/64d58efce2.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="login.css" />
     <title>GroupBuy</title>
   </head>
@@ -14,39 +11,40 @@
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="#" class="sign-in-form">
+          <form id="loginForm" class="sign-in-form">
             <h2 class="title">Entrar</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="email" id="email-login" placeholder="Digite seu e-mail" required>
+              <input type="email" id="email-login" placeholder="Digite seu e-mail" required />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" id="senha-login" placeholder="Digite sua senha" required>
+              <input type="password" id="senha-login" placeholder="Digite sua senha" required />
             </div>
+            <p id="errorMessage" style="display: none; color: red;">Credenciais inválidas</p>
             <input type="submit" value="Entrar" class="btn solid" />
           </form>
-          <form action="#" class="sign-up-form">
+          <form id="signUpForm" class="sign-up-form">
             <h2 class="title">Cadastrar</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" id="nome-cadastro" placeholder="Digite seu nome completo" required>
+              <input type="text" id="nome-cadastro" placeholder="Digite seu nome completo" required />
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" id="email-cadastro" placeholder="Digite seu e-mail" required>
+              <input type="email" id="email-cadastro" placeholder="Digite seu e-mail" required />
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="tel" id="telefone-cadastro" placeholder="Digite seu telefone (ex.: 11999999999)" pattern="[0-9]{11}" required>
+              <input type="tel" id="telefone-cadastro" placeholder="Digite seu telefone (ex.: 11999999999)" pattern="[0-9]{11}" required />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" id="senha-cadastro" placeholder="Digite sua senha" minlength="6" required>
+              <input type="password" id="senha-cadastro" placeholder="Digite sua senha" minlength="6" required />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" id="confirmaSenha-cadastro" placeholder="Confirme sua senha" minlength="6" required>
+              <input type="password" id="confirmaSenha-cadastro" placeholder="Confirme sua senha" minlength="6" required />
             </div>
             <input type="submit" class="btn" value="Cadastrar" />
           </form>
@@ -60,9 +58,7 @@
             <p>
               Nosso site conecta pessoas para formar grupos de compras, permitindo que você consiga grandes descontos ao adquirir produtos em conjunto. Economize mais comprando em grupo!
             </p>
-            <button class="btn transparent" id="sign-up-btn">
-              Cadastrar
-            </button>
+            <button class="btn transparent" id="sign-up-btn">Cadastrar</button>
           </div>
           <img src="img/log.svg" class="image" alt="Imagem de login" />
         </div>
@@ -72,15 +68,12 @@
             <p>
               Aproveite os melhores descontos juntando-se a grupos de compras e torne suas compras mais acessíveis. Entre agora e comece a economizar!
             </p>
-            <button class="btn transparent" id="sign-in-btn">
-              Entrar
-            </button>
+            <button class="btn transparent" id="sign-in-btn">Entrar</button>
           </div>
           <img src="img/register.svg" class="image" alt="Imagem de cadastro" />
         </div>
       </div>
     </div>
-
 
     <script>
       const sign_in_btn = document.querySelector("#sign-in-btn");
@@ -128,10 +121,11 @@
             alert("Login realizado com sucesso!");
             window.location.href = "home.html"; // Redireciona para a página inicial
           } else {
-            document.getElementById("errorMessage").style.display = "block";
+            alert("E-mail ou senha inválidos!");
           }
         } catch (error) {
-          console.error("Erro ao fazer login: ", error);
+          alert("Erro ao fazer login. Tente novamente.");
+          console.error(error);
         }
       });
 
@@ -166,7 +160,8 @@
           signUpForm.reset();
           container.classList.remove("sign-up-mode");
         } catch (error) {
-          console.error("Erro ao cadastrar: ", error);
+          alert("Erro ao cadastrar. Tente novamente.");
+          console.error(error);
         }
       });
     </script>
