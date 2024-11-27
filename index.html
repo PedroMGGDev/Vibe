@@ -18,11 +18,11 @@
             <h2 class="title">Entrar</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Usuário" />
+              <input type="email" id="email-login" placeholder="Digite seu e-mail" required>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Senha" />
+              <input type="password" id="senha-login" placeholder="Digite sua senha" required>
             </div>
             <input type="submit" value="Entrar" class="btn solid" />
           </form>
@@ -30,15 +30,23 @@
             <h2 class="title">Cadastrar</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Usuário" />
+              <input type="text" id="nome-cadastro" placeholder="Digite seu nome completo" required>
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" />
+              <input type="email" id="email-cadastro" placeholder="Digite seu e-mail" required>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="tel" id="telefone-cadastro" placeholder="Digite seu telefone (ex.: 11999999999)" pattern="[0-9]{11}" required>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Senha" />
+              <input type="password" id="senha-cadastro" placeholder="Digite sua senha" minlength="6" required>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="confirmaSenha-cadastro" placeholder="Confirme sua senha" minlength="6" required>
             </div>
             <input type="submit" class="btn" value="Cadastrar" />
           </form>
