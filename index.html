@@ -1,12 +1,178 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Teste de Alerta</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="login.css" />
+    <title>GroupBuy</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <form id="loginForm" class="sign-in-form">
+            <h2 class="title">Entrar</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="email" id="email-login" placeholder="Digite seu e-mail" required />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="senha-login" placeholder="Digite sua senha" required />
+            </div>
+            <input type="submit" value="Entrar" class="btn solid" />
+          </form>
+          <form id="signUpForm" class="sign-up-form">
+            <h2 class="title">Cadastrar</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" id="nome-cadastro" placeholder="Digite seu nome completo" required />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="email-cadastro" placeholder="Digite seu e-mail" required />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="tel" id="telefone-cadastro" placeholder="Digite seu telefone (ex.: 11999999999)" pattern="[0-9]{11}" required />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="senha-cadastro" placeholder="Digite sua senha" minlength="6" required />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="confirmaSenha-cadastro" placeholder="Confirme sua senha" minlength="6" required />
+            </div>
+            <input type="submit" class="btn" value="Cadastrar" />
+          </form>
+        </div>
+      </div>
+
+      <div class="panels-container">
+        <div class="panel left-panel">
+          <div class="content">
+            <h3>É novo aqui?</h3>
+            <p>
+              Nosso site conecta pessoas para formar grupos de compras, permitindo que você consiga grandes descontos ao adquirir produtos em conjunto. Economize mais comprando em grupo!
+            </p>
+            <button class="btn transparent" id="sign-up-btn">Cadastrar</button>
+          </div>
+          <img src="img/log.svg" class="image" alt="Imagem de login" />
+        </div>
+        <div class="panel right-panel">
+          <div class="content">
+            <h3>Já tem uma conta?</h3>
+            <p>
+              Aproveite os melhores descontos juntando-se a grupos de compras e torne suas compras mais acessíveis. Entre agora e comece a economizar!
+            </p>
+            <button class="btn transparent" id="sign-in-btn">Entrar</button>
+          </div>
+          <img src="img/register.svg" class="image" alt="Imagem de cadastro" />
+        </div>
+      </div>
+    </div>
+
     <script>
-        alert("Bem-vindo ao site!");
+      // Alerta ao carregar a página
+      alert("Bem-vindo à página de login e cadastro!");
+
+      const sign_in_btn = document.querySelector("#sign-in-btn");
+      const sign_up_btn = document.querySelector("#sign-up-btn");
+      const container = document.querySelector(".container");
+
+      sign_up_btn.addEventListener("click", () => {
+        alert("Alternando para a tela de cadastro.");
+        container.classList.add("sign-up-mode");
+      });
+
+      sign_in_btn.addEventListener("click", () => {
+        alert("Alternando para a tela de login.");
+        container.classList.remove("sign-up-mode");
+      });
+
+      // Firebase configuration
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import { getFirestore, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBEPa65Myn-ejVbyGWuyLMuDhrlqiPzIvc",
+        authDomain: "groupbuy-9e93e.firebaseapp.com",
+        projectId: "groupbuy-9e93e",
+        storageBucket: "groupbuy-9e93e.appspot.com",
+        messagingSenderId: "1093381465844",
+        appId: "1:1093381465844:web:54ac1479ade1f6c2cfa0a1",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Login logic
+      const loginForm = document.getElementById("loginForm");
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        alert("Tentando fazer login...");
+
+        const email = document.getElementById("email-login").value.trim();
+        const senha = document.getElementById("senha-login").value.trim();
+
+        try {
+          alert("Verificando credenciais...");
+          const usuariosRef = collection(db, "usuarios");
+          const userQuery = query(usuariosRef, where("email", "==", email), where("senha", "==", senha));
+          const userSnapshot = await getDocs(userQuery);
+
+          if (!userSnapshot.empty) {
+            alert("Login realizado com sucesso! Redirecionando...");
+            window.location.href = "home.html"; // Redireciona para a página inicial
+          } else {
+            alert("E-mail ou senha inválidos!");
+          }
+        } catch (error) {
+          alert("Erro ao fazer login. Tente novamente.");
+          console.error(error);
+        }
+      });
+
+      // Cadastro logic
+      const signUpForm = document.getElementById("signUpForm");
+      signUpForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        alert("Tentando realizar cadastro...");
+
+        const nome = document.getElementById("nome-cadastro").value.trim();
+        const email = document.getElementById("email-cadastro").value.trim();
+        const telefone = document.getElementById("telefone-cadastro").value.trim();
+        const senha = document.getElementById("senha-cadastro").value.trim();
+        const confirmaSenha = document.getElementById("confirmaSenha-cadastro").value.trim();
+
+        if (senha !== confirmaSenha) {
+          alert("As senhas não conferem!");
+          return;
+        }
+
+        try {
+          alert("Verificando se o e-mail já está cadastrado...");
+          const usuariosRef = collection(db, "usuarios");
+          const emailQuery = query(usuariosRef, where("email", "==", email));
+          const emailSnapshot = await getDocs(emailQuery);
+
+          if (!emailSnapshot.empty) {
+            alert("E-mail já cadastrado!");
+            return;
+          }
+
+          alert("Realizando cadastro...");
+          await addDoc(usuariosRef, { nome, email, telefone, senha });
+          alert("Cadastro realizado com sucesso! Voltando para a tela de login.");
+          signUpForm.reset();
+          container.classList.remove("sign-up-mode");
+        } catch (error) {
+          alert("Erro ao cadastrar. Tente novamente.");
+          console.error(error);
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
