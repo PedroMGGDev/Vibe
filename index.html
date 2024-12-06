@@ -1,86 +1,280 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://kit.fontawesome.com/64d58efce2.js"
-      crossorigin="anonymous"
-    ></script>
-    <link rel="stylesheet" href="login.css" />
-    <title>GroupBuy</title>
-  </head>
-  <body>
-    <div class="container">
-      <div class="forms-container">
-        <div class="signin-signup">
-          <form action="#" class="sign-in-form">
-            <h2 class="title">Entrar</h2>
-            <div class="input-field">
-              <i class="fas fa-user"></i>
-              <input type="email" id="email-login" placeholder="Digite seu e-mail" required>
-            </div>
-            <div class="input-field">
-              <i class="fas fa-lock"></i>
-              <input type="password" id="senha-login" placeholder="Digite sua senha" required>
-            </div>
-            <input type="submit" value="Entrar" class="btn solid" />
-          </form>
-          <form action="#" class="sign-up-form">
-            <h2 class="title">Cadastrar</h2>
-            <div class="input-field">
-              <i class="fas fa-user"></i>
-              <input type="text" id="nome-cadastro" placeholder="Digite seu nome completo" required>
-            </div>
-            <div class="input-field">
-              <i class="fas fa-envelope"></i>
-              <input type="email" id="email-cadastro" placeholder="Digite seu e-mail" required>
-            </div>
-            <div class="input-field">
-              <i class="fas fa-envelope"></i>
-              <input type="tel" id="telefone-cadastro" placeholder="Digite seu telefone (ex.: 11999999999)" pattern="[0-9]{11}" required>
-            </div>
-            <div class="input-field">
-              <i class="fas fa-lock"></i>
-              <input type="password" id="senha-cadastro" placeholder="Digite sua senha" minlength="6" required>
-            </div>
-            <div class="input-field">
-              <i class="fas fa-lock"></i>
-              <input type="password" id="confirmaSenha-cadastro" placeholder="Confirme sua senha" minlength="6" required>
-            </div>
-            <input type="submit" class="btn" value="Cadastrar" />
-          </form>
-        </div>
-      </div>
 
-      <div class="panels-container">
-        <div class="panel left-panel">
-          <div class="content">
-            <h3>É novo aqui?</h3>
-            <p>
-              Nosso site conecta pessoas para formar grupos de compras, permitindo que você consiga grandes descontos ao adquirir produtos em conjunto. Economize mais comprando em grupo!
-            </p>
-            <button class="btn transparent" id="sign-up-btn">
-              Cadastrar
-            </button>
-          </div>
-          <img src="img/log.svg" class="image" alt="Imagem de login" />
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Coração Animado</title>
+
+    <style>
+
+        body {
+
+            margin: 0;
+
+            overflow: hidden;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background-color: #2e2e2e;
+
+            color: white;
+
+            font-family: Arial, sans-serif;
+
+        }
+
+        #question-container {
+
+            position: absolute;
+
+            top: 10%;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+        }
+
+        #button-container {
+
+            margin-top: 20px;
+
+        }
+
+        button {
+
+            margin: 5px;
+
+            padding: 10px 20px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            border: none;
+
+            background-color: #ff0000;
+
+            color: white;
+
+            border-radius: 5px;
+
+        }
+
+        #message {
+
+            margin-top: 20px;
+
+            font-size: 24px;
+
+            color: #ff0000;
+
+            display: none;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="question-container">
+
+        <h1>Você me ama?</h1>
+
+        <div id="button-container">
+
+            <button id="yes-button">Sim</button>
+
+            <button id="no-button">Não</button>
+
         </div>
-        <div class="panel right-panel">
-          <div class="content">
-            <h3>Já tem uma conta?</h3>
-            <p>
-              Aproveite os melhores descontos juntando-se a grupos de compras e torne suas compras mais acessíveis. Entre agora e comece a economizar!
-            </p>
-            <button class="btn transparent" id="sign-in-btn">
-              Entrar
-            </button>
-          </div>
-          <img src="img/register.svg" class="image" alt="Imagem de cadastro" />
-        </div>
-      </div>
+
+        <div id="message">Eu também te amo!</div>
+
     </div>
 
-    <script src="login.js"></script>
-  </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+
+        // Configuração básica da cena
+
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        document.body.appendChild(renderer.domElement);
+
+ 
+
+        // Luz
+
+        const light = new THREE.PointLight(0xffffff, 2, 1000);
+
+        light.position.set(10, 10, 10);
+
+        scene.add(light);
+
+ 
+
+        // Geometria do coração
+
+        const shape = new THREE.Shape();
+
+        const x = 0, y = 0;
+
+        shape.moveTo(x + 25, y + 25);
+
+        shape.bezierCurveTo(x + 25, y + 25, x + 20, y, x, y);
+
+        shape.bezierCurveTo(x - 30, y, x - 30, y + 35, x - 30, y + 35);
+
+        shape.bezierCurveTo(x - 30, y + 55, x - 10, y + 77, x + 25, y + 95);
+
+        shape.bezierCurveTo(x + 60, y + 77, x + 80, y + 55, x + 80, y + 35);
+
+        shape.bezierCurveTo(x + 80, y + 35, x + 80, y, x + 50, y);
+
+        shape.bezierCurveTo(x + 35, y, x + 25, y + 25, x + 25, y + 25);
+
+ 
+
+        const extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+
+        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+
+        const material = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+
+        const heart = new THREE.Mesh(geometry, material);
+
+        scene.add(heart);
+
+ 
+
+        // Animação do coração
+
+        heart.position.set(0, 0, -50);
+
+        heart.rotation.y = Math.PI / 4;
+
+        heart.rotation.x = Math.PI; // Rotação de 180 graus no eixo X
+
+ 
+
+        // Animação
+
+        function animate() {
+
+            requestAnimationFrame(animate);
+
+            heart.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+
+        }
+
+ 
+
+        camera.position.z = 100;
+
+        animate();
+
+ 
+
+        // Ajuste de tamanho da tela
+
+        window.addEventListener('resize', () => {
+
+            const width = window.innerWidth;
+
+            const height = window.innerHeight;
+
+            renderer.setSize(width, height);
+
+            camera.aspect = width / height;
+
+            camera.updateProjectionMatrix();
+
+        });
+
+ 
+
+        // Lógica do botão "Não"
+
+        const noButton = document.getElementById('no-button');
+
+        noButton.addEventListener('mouseover', () => {
+
+            const maxX = window.innerWidth - noButton.clientWidth;
+
+            const maxY = window.innerHeight - noButton.clientHeight;
+
+            const buffer = 120; // Distância mínima para o botão se mover
+
+ 
+
+            let newX = noButton.offsetLeft + (Math.random() * buffer * 2 - buffer);
+
+            let newY = noButton.offsetTop + (Math.random() * buffer * 2 - buffer);
+
+ 
+
+            // Garantir que o botão não saia da tela
+
+            if (newX < 0) newX = 0;
+
+            if (newX > maxX) newX = maxX;
+
+            if (newY < 0) newY = 0;
+
+            if (newY > maxY) newY = maxY;
+
+ 
+
+            noButton.style.position = 'absolute';
+
+            noButton.style.left = `${newX}px`;
+
+            noButton.style.top = `${newY}px`;
+
+        });
+
+ 
+
+        // Lógica do botão "Sim"
+
+        const yesButton = document.getElementById('yes-button');
+
+        yesButton.addEventListener('click', () => {
+
+            const message = document.getElementById('message');
+
+            message.style.display = 'block';
+
+        });
+
+    </script>
+
+</body>
+
 </html>
+
