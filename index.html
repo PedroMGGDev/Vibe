@@ -1,280 +1,34 @@
 <!DOCTYPE html>
-
-<html lang="pt-BR">
-
+<html lang="en">
 <head>
-
     <meta charset="UTF-8">
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Coração Animado</title>
-
-    <style>
-
-        body {
-
-            margin: 0;
-
-            overflow: hidden;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            justify-content: center;
-
-            background-color: #2e2e2e;
-
-            color: white;
-
-            font-family: Arial, sans-serif;
-
-        }
-
-        #question-container {
-
-            position: absolute;
-
-            top: 10%;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-        }
-
-        #button-container {
-
-            margin-top: 20px;
-
-        }
-
-        button {
-
-            margin: 5px;
-
-            padding: 10px 20px;
-
-            font-size: 16px;
-
-            cursor: pointer;
-
-            border: none;
-
-            background-color: #ff0000;
-
-            color: white;
-
-            border-radius: 5px;
-
-        }
-
-        #message {
-
-            margin-top: 20px;
-
-            font-size: 24px;
-
-            color: #ff0000;
-
-            display: none;
-
-        }
-
-    </style>
-
+    <title>CSS Envelope + Letter (Open/Close on Click)</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
-
 <body>
-
-    <div id="question-container">
-
-        <h1>Você me ama?</h1>
-
-        <div id="button-container">
-
-            <button id="yes-button">Sim</button>
-
-            <button id="no-button">Não</button>
-
+    <div class="container">
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="text">
+                        <strong>Dear Person.</strong>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            Numquam labore omnis minus maiores laboriosam, facere in beatae esse. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="heart"></div>
         </div>
-
-        <div id="message">Eu também te amo!</div>
-
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
     <script>
-
-        // Configuração básica da cena
-
-        const scene = new THREE.Scene();
-
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-
-        document.body.appendChild(renderer.domElement);
-
- 
-
-        // Luz
-
-        const light = new THREE.PointLight(0xffffff, 2, 1000);
-
-        light.position.set(10, 10, 10);
-
-        scene.add(light);
-
- 
-
-        // Geometria do coração
-
-        const shape = new THREE.Shape();
-
-        const x = 0, y = 0;
-
-        shape.moveTo(x + 25, y + 25);
-
-        shape.bezierCurveTo(x + 25, y + 25, x + 20, y, x, y);
-
-        shape.bezierCurveTo(x - 30, y, x - 30, y + 35, x - 30, y + 35);
-
-        shape.bezierCurveTo(x - 30, y + 55, x - 10, y + 77, x + 25, y + 95);
-
-        shape.bezierCurveTo(x + 60, y + 77, x + 80, y + 55, x + 80, y + 35);
-
-        shape.bezierCurveTo(x + 80, y + 35, x + 80, y, x + 50, y);
-
-        shape.bezierCurveTo(x + 35, y, x + 25, y + 25, x + 25, y + 25);
-
- 
-
-        const extrudeSettings = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-
-        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-
-        const material = new THREE.MeshPhongMaterial({ color: 0xff0000 });
-
-        const heart = new THREE.Mesh(geometry, material);
-
-        scene.add(heart);
-
- 
-
-        // Animação do coração
-
-        heart.position.set(0, 0, -50);
-
-        heart.rotation.y = Math.PI / 4;
-
-        heart.rotation.x = Math.PI; // Rotação de 180 graus no eixo X
-
- 
-
-        // Animação
-
-        function animate() {
-
-            requestAnimationFrame(animate);
-
-            heart.rotation.y += 0.01;
-
-            renderer.render(scene, camera);
-
-        }
-
- 
-
-        camera.position.z = 100;
-
-        animate();
-
- 
-
-        // Ajuste de tamanho da tela
-
-        window.addEventListener('resize', () => {
-
-            const width = window.innerWidth;
-
-            const height = window.innerHeight;
-
-            renderer.setSize(width, height);
-
-            camera.aspect = width / height;
-
-            camera.updateProjectionMatrix();
-
+        const envelope = document.querySelector('.envelope-wrapper');
+        envelope.addEventListener('click', () => {
+            envelope.classList.toggle('flap');
         });
-
- 
-
-        // Lógica do botão "Não"
-
-        const noButton = document.getElementById('no-button');
-
-        noButton.addEventListener('mouseover', () => {
-
-            const maxX = window.innerWidth - noButton.clientWidth;
-
-            const maxY = window.innerHeight - noButton.clientHeight;
-
-            const buffer = 120; // Distância mínima para o botão se mover
-
- 
-
-            let newX = noButton.offsetLeft + (Math.random() * buffer * 2 - buffer);
-
-            let newY = noButton.offsetTop + (Math.random() * buffer * 2 - buffer);
-
- 
-
-            // Garantir que o botão não saia da tela
-
-            if (newX < 0) newX = 0;
-
-            if (newX > maxX) newX = maxX;
-
-            if (newY < 0) newY = 0;
-
-            if (newY > maxY) newY = maxY;
-
- 
-
-            noButton.style.position = 'absolute';
-
-            noButton.style.left = `${newX}px`;
-
-            noButton.style.top = `${newY}px`;
-
-        });
-
- 
-
-        // Lógica do botão "Sim"
-
-        const yesButton = document.getElementById('yes-button');
-
-        yesButton.addEventListener('click', () => {
-
-            const message = document.getElementById('message');
-
-            message.style.display = 'block';
-
-        });
-
     </script>
-
 </body>
-
 </html>
-
