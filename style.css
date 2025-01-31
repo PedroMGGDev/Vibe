@@ -71,7 +71,8 @@ body {
   transition: all 1s ease-in-out;
   box-shadow: 0 0 5px var(--shadow-color);
   padding: 20px 10px;
-  overflow-y: auto; /* Permite o rolar do conteúdo */
+  overflow-y: scroll; /* Permite rolar o conteúdo */
+  max-height: calc(100% - 130px); /* Impede o texto de ultrapassar a carta */
 }
 
 .envelope > .letter > .text {
