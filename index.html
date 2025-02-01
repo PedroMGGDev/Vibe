@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amo minha mulher</title>
+    <title>Cartinha Romântica</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,21 +12,29 @@
             <div class="envelope">
                 <div class="letter">
                     <div class="text">
-                        <strong>Meu amor,</strong>
+                        <strong>Minha amada,</strong>
                         <p>
-                            Eu sei que você pode estar achando um pouco estranho, pensando: "Que tipo de retardado entrega uma cartinha em formato de site?" E, honestamente, eu não tenho uma explicação lógica pra isso, mas quero que saiba que a razão de eu fazer isso é simples: eu queria, de algum jeito, mostrar o quanto você significa pra mim. Eu não tinha papel, mas o meu coração tinha tanto a dizer, que achei que essa seria a forma de compartilhar com você tudo o que eu sinto.
+                            Olha, eu sei que você pode estar achando estranho e pensando:  
+                            “Que tipo de louco entrega uma cartinha em formato de site?”  
+                            Bom... O motivo é que eu não tinha papel, mas isso não ia me impedir  
+                            de escrever algo para ver o seu sorriso.  
                         </p>
                         <p>
-                            Quero ver o seu sorriso, aquele sorriso que me deixa sem palavras, porque ele é a razão de tantos dos meus melhores dias. Você é tudo o que pedi a Deus e tudo o que eu preciso agora. Hoje estamos completando nosso primeiro mês juntos, e cada segundo ao seu lado tem sido um presente divino. Agradeço todos os dias por ter você na minha vida.
+                            Porque eu amo esse sorriso. Amo você. Você é tudo para mim,  
+                            tudo o que eu pedi a Deus, tudo o que eu preciso na vida.  
                         </p>
                         <p>
-                            Você é muito especial, mais do que qualquer palavras que eu tente juntar. Eu te amo com uma intensidade que vai além do que posso expressar. E é por isso que, com todo meu coração, quero passar o resto da minha vida ao seu lado. Eu amo cada fio do seu cabelo enrolado, o brilho dos seus olhos gigantes, o seu corpo maravilhoso, o seu sorriso que é capaz de iluminar até os dias mais escuros.
+                            Hoje completamos um mês juntos, e eu agradeço todos os dias por esse presente.  
+                            Você é especial de um jeito que nem todas as palavras do mundo  
+                            poderiam descrever, e eu sou grato por cada momento ao seu lado.  
                         </p>
                         <p>
-                            Lembre-se, amor, que eu preciso de você ao meu lado, porque sem você, eu não sou nada. Eu te amo de uma forma que palavras não podem captar. Te vivo, te desejo, sou completamente apaixonado por você.
+                            Amo seus cabelos enrolados, seu olhar gigante,  
+                            seu corpo lindo e seu sorriso perfeito.  
                         </p>
                         <p>
-                            Com todo o meu amor
+                            Quero casar com você. Porque sem você, eu não sou nada.  
+                            Eu te amo, te vivo e sou completamente apaixonado por ti.  
                         </p>
                     </div>
                 </div>
@@ -35,10 +42,12 @@
             <div class="heart"></div>
         </div>
     </div>
+
     <script>
         const envelope = document.querySelector('.envelope-wrapper');
+
         envelope.addEventListener('click', () => {
-            envelope.classList.toggle('flap');
+            envelope.classList.add('flap'); // Mantém a carta aberta permanentemente
         });
     </script>
 </body>
