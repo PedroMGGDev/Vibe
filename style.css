@@ -28,6 +28,7 @@ body {
 .container > .envelope-wrapper {
   background: var(--bg-envelope-color);
   box-shadow: 0 0 40px var(--shadow-color);
+  position: relative;
 }
 
 .envelope-wrapper > .envelope {
@@ -71,8 +72,8 @@ body {
   transition: all 1s ease-in-out;
   box-shadow: 0 0 5px var(--shadow-color);
   padding: 20px 10px;
-  overflow-y: scroll; /* Permite rolar o conteúdo */
-  max-height: calc(100% - 130px); /* Impede o texto de ultrapassar a carta */
+  overflow-y: auto; /* Agora pode rolar para baixo e para cima */
+  max-height: 300px; /* Garante que a carta tenha um limite visível */
 }
 
 .envelope > .letter > .text {
@@ -115,6 +116,7 @@ body {
   right: 7.5px;
 }
 
+/* Mantém a carta aberta quando for clicada */
 .flap > .envelope:before {
   transform: rotateX(180deg);
   z-index: 0;
